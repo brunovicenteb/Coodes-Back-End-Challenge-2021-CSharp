@@ -9,6 +9,7 @@ WORKDIR "/src"
 COPY ["Coodesh.Back.End.Challenge2021.CSharp.sln", "./"]
 COPY ["Core/Coodesh.Back.End.Challenge2021.CSharp.Core.csproj", "Core/"]
 COPY ["Api/Coodesh.Back.End.Challenge2021.CSharp.Api.csproj", "Api/"]
+COPY ["Cron/Coodesh.Back.End.Challenge2021.CSharp.Cron.csproj", "Cron/"]
 
 RUN dotnet restore
 COPY . .
@@ -17,6 +18,9 @@ WORKDIR "/src/Core"
 RUN dotnet build -c Release -o /app
 
 WORKDIR "/src/Api"
+RUN dotnet build -c Release -o /app
+
+WORKDIR "/src/Cron"
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish
