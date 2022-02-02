@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using System.Text.Json.Serialization;
 
-namespace CoodesBackEndChallenge2021CSharp.Entities
+namespace Coodes.Back.End.Challenge2021.CSharp.Core.Entities
 {
     public class Article
     {
@@ -73,6 +73,19 @@ namespace CoodesBackEndChallenge2021CSharp.Entities
         [JsonPropertyName("updatedAt")]
         [BsonRepresentation(BsonType.String)]
         public string UpdatedAt
+        {
+            get; set;
+        }
+
+        [JsonPropertyName("launches")]
+        public Launche[] Launches
+        {
+            get; set;
+        }
+
+
+        [JsonPropertyName("events")]
+        public Events[] Events
         {
             get; set;
         }

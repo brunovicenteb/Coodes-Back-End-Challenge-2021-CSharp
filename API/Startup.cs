@@ -1,15 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using CoodesBackEndChallenge2021CSharp.Data;
+using Coodes.Back.End.Challenge2021.CSharp.Core.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Http;
+using System.Text;
 
-namespace CoodesBackEndChallenge2021CSharp
+namespace Coodes.Back.End.Challenge2021.CSharp.Api
 {
     public class Startup
     {
@@ -58,7 +59,7 @@ namespace CoodesBackEndChallenge2021CSharp
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", (c) => c.Response.WriteAsync("Back-end Challenge 2021 🏅 - Space Flight New", System.Text.Encoding.UTF8));
+                endpoints.MapGet("/", (c) => c.Response.WriteAsync("Back-end Challenge 2021 🏅 - Space Flight New",Encoding.UTF8));
                 endpoints.MapDefaultControllerRoute();
             });
         }

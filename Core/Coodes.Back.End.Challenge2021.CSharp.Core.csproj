@@ -1,13 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <AssemblyName>CoodesBackEndChallenge2021CSharp</AssemblyName>
-    <RootNamespace>CoodesBackEndChallenge2021CSharp</RootNamespace>
+    <AssemblyName>Coodes.Back.End.Challenge2021.CSharp.Core</AssemblyName>
+    <RootNamespace>Coodes.Back.End.Challenge2021.CSharp.Core</RootNamespace>	
   </PropertyGroup>
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
-  </PropertyGroup>  
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>C:\Fontes\Coodes-Back-End-Challenge-2021-CSharp\bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>C:\Fontes\Coodes-Back-End-Challenge-2021-CSharp\bin\</OutputPath>
+  </PropertyGroup>    
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.9" />
@@ -16,5 +22,5 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.13" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-  </ItemGroup>
+  </ItemGroup>  
 </Project>

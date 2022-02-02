@@ -2,9 +2,8 @@ using MongoDB.Bson;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using CoodesBackEndChallenge2021CSharp.Domain;
-using CoodesBackEndChallenge2021CSharp.Data;
-using CoodesBackEndChallenge2021CSharp.Entities;
+using Coodes.Back.End.Challenge2021.CSharp.Core.Data;
+using Coodes.Back.End.Challenge2021.CSharp.Core.Entities;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System;
@@ -50,14 +49,18 @@ namespace CoodesBackEndChallenge2021CSharp.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Articles(int id)
         {
-            var builder = Builders<Article>.Filter;
-            var filter = builder.Eq("ID", id);
-            Article t = await _Context.Articles.Find(filter).FirstOrDefaultAsync();
+            Article t = await LoadArticle(id);
             if (t != null)
                 return Ok(t);
             return NotFound($"Article {id} not found.");
         }
 
+        private Task<Article> LoadArticle(int pArticleID)
+        {
+            var builder = Builders<Article>.Filter;
+            var filter = builder.Eq("ID", pArticleID);
+            return _Context.Articles.Find(filter).FirstOrDefaultAsync();
+        }
 
         /// <response code="200">Response</response>
         /// <response code="400">Bad Request</response>
@@ -78,9 +81,11 @@ namespace CoodesBackEndChallenge2021CSharp.Controllers
         {
             if (pArticle == null)
                 return BadRequest("Invalid Article.");
-            pArticle.ID = Guid.NewGuid().GetHashCode();
+            int newID = pArticle.ID;
+            if (newID <= 0)
+                newID = pArticle.ID = Guid.NewGuid().GetHashCode();
             await _Context.Articles.InsertOneAsync(pArticle);
-            return Ok(pArticle);
+            return await Articles(newID);
         }
 
         /// <summary>Update a Article</summary>
@@ -93,9 +98,13 @@ namespace CoodesBackEndChallenge2021CSharp.Controllers
         {
             if (pArticle == null)
                 return BadRequest("Invalid Article.");
+            Article t = await LoadArticle(id);
+            if (t == null)
+                return NotFound($"Article {id} not found.");
             pArticle.ID = id;
+            pArticle.ObjectID = t.ObjectID;
             var updateResult = await _Context.Articles.ReplaceOneAsync(
-                o => o.ID == id, replacement: pArticle);
+                o => o.ObjectID == t.ObjectID, replacement: pArticle);
             if (updateResult.IsAcknowledged && updateResult.ModifiedCount > 0)
                 return Ok(pArticle);
             return BadRequest($"Article {id} not updated.");
@@ -108,6 +117,9 @@ namespace CoodesBackEndChallenge2021CSharp.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> ArticlesDelete(int id)
         {
+            Article t = await LoadArticle(id);
+            if (t == null)
+                return NotFound($"Article {id} not found.");
             var deleteResult = await _Context.Articles.DeleteOneAsync(
                 o => o.ID == id);
             if (deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0)

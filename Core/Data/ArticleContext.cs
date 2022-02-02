@@ -1,16 +1,13 @@
-﻿using CoodesBackEndChallenge2021CSharp.Domain;
-using CoodesBackEndChallenge2021CSharp.Entities;
+﻿using Coodes.Back.End.Challenge2021.CSharp.Core.Entities;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace CoodesBackEndChallenge2021CSharp.Data
+namespace Coodes.Back.End.Challenge2021.CSharp.Core.Data
 {
     public class ArticleContext : IArticleContext
     {
