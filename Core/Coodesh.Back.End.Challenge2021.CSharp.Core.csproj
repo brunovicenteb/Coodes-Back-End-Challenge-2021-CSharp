@@ -1,18 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <AssemblyName>Coodes.Back.End.Challenge2021.CSharp.Core</AssemblyName>
-    <RootNamespace>Coodes.Back.End.Challenge2021.CSharp.Core</RootNamespace>	
+    <AssemblyName>Coodesh.Back.End.Challenge2021.CSharp.Core</AssemblyName>
+    <RootNamespace>Coodesh.Back.End.Challenge2021.CSharp.Core</RootNamespace>	
   </PropertyGroup>
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>C:\Fontes\Coodes-Back-End-Challenge-2021-CSharp\bin\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>C:\Fontes\Coodes-Back-End-Challenge-2021-CSharp\bin\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
   </PropertyGroup>    
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.9" />
