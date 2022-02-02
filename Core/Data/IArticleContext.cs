@@ -1,7 +1,7 @@
 ﻿using MongoDB.Driver;
-using Coodes.Back.End.Challenge2021.CSharp.Core.Entities;
+using Coodesh.Back.End.Challenge2021.CSharp.Core.Entities;
 
-namespace Coodes.Back.End.Challenge2021.CSharp.Core.Data
+namespace Coodesh.Back.End.Challenge2021.CSharp.Core.Data
 {
     public interface IArticleContext
     {

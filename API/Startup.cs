@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using Coodes.Back.End.Challenge2021.CSharp.Core.Data;
+using Coodesh.Back.End.Challenge2021.CSharp.Core.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +10,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Http;
 using System.Text;
 
-namespace Coodes.Back.End.Challenge2021.CSharp.Api
+namespace Coodesh.Back.End.Challenge2021.CSharp.Api
 {
     public class Startup
     {

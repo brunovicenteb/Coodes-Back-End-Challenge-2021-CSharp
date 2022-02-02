@@ -2,13 +2,13 @@ using MongoDB.Bson;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Coodes.Back.End.Challenge2021.CSharp.Core.Data;
-using Coodes.Back.End.Challenge2021.CSharp.Core.Entities;
+using Coodesh.Back.End.Challenge2021.CSharp.Core.Data;
+using Coodesh.Back.End.Challenge2021.CSharp.Core.Entities;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System;
 
-namespace CoodesBackEndChallenge2021CSharp.Controllers
+namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Controllers
 {
 
     [ApiController]

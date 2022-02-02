@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using System.Text.Json.Serialization;
 
-namespace Coodes.Back.End.Challenge2021.CSharp.Core.Entities
+namespace Coodesh.Back.End.Challenge2021.CSharp.Core.Entities
 {
     public class Article
     {

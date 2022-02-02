@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Coodes.Back.End.Challenge2021.CSharp.Api
+namespace Coodesh.Back.End.Challenge2021.CSharp.Api
 {
     public class Program
     {
