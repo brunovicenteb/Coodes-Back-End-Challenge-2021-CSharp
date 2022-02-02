@@ -13,10 +13,9 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron
             Console.WriteLine($"ConectionString: {connectionString};");
             Console.WriteLine($"DataBaseName: {dataBaseName};");
             Console.WriteLine($"CollectionName: {collectionName};");
-            CronArticleContext ct = new CronArticleContext(connectionString, dataBaseName, collectionName);
-            int count = ct.Seed();
+            CronArticleContext ct = new CronArticleContext(connectionString, dataBaseName, collectionName, 500);
+            ct.Seed();
             Console.WriteLine();
-            Console.WriteLine($"New {count} Articles has add to MongoDB.");
             Console.ReadKey();
         }
     }
