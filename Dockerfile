@@ -5,19 +5,24 @@ WORKDIR /app
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-WORKDIR /src
+WORKDIR "/src"
+COPY ["Coodesh.Back.End.Challenge2021.CSharp.sln", "./"]
+COPY ["Core/Coodesh.Back.End.Challenge2021.CSharp.Core.csproj", "Core/"]
 COPY ["Api/Coodesh.Back.End.Challenge2021.CSharp.Api.csproj", "Api/"]
-COPY ["Core/Coodesh.Back.End.Challenge2021.CSharp.Core.csproj", "Api/"]
-RUN dotnet restore "Api/Coodesh.Back.End.Challenge2021.CSharp.Api.csproj"
+
+RUN dotnet restore
 COPY . .
+
+WORKDIR "/src/Core"
+RUN dotnet build -c Release -o /app
+
 WORKDIR "/src/Api"
-RUN dotnet build "Coodesh.Back.End.Challenge2021.CSharp.Core.csproj" -c Release -o /app/build
-RUN dotnet build "Coodesh.Back.End.Challenge2021.CSharp.Api.csproj" -c Release -o /app/build
+RUN dotnet build -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "Api/Coodesh.Back.End.Challenge2021.CSharp.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "Coodesh.Back.End.Challenge2021.CSharp.Api.dll"]

@@ -78,6 +78,10 @@ Nessa etapa você deverá construir uma API Restful com as melhores práticas de
 
 >  This is a challenge by [Coodesh](https://coodesh.com/)
 
+>  docker build --no-cache -t coodesh-api:dev .
+
+>  docker run -d -p 17133:80 --name bb-codesh coodesh-api:dev
+
 ## Finalização e Instruções para a Apresentação
 
 Avisar sobre a finalização e enviar para correção.
