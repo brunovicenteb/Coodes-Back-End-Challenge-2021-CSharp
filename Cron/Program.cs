@@ -1,5 +1,6 @@
 ﻿using Coodesh.Back.End.Challenge2021.CSharp.Cron.Context;
 using System;
+using System.Diagnostics;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Cron
 {
@@ -13,9 +14,8 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron
             Console.WriteLine($"ConectionString: {connectionString};");
             Console.WriteLine($"DataBaseName: {dataBaseName};");
             Console.WriteLine($"CollectionName: {collectionName};");
-            CronArticleContext ct = new CronArticleContext(connectionString, dataBaseName, collectionName, 500);
+            CronArticleContext ct = new CronArticleContext(connectionString, dataBaseName, collectionName, -1);
             ct.Seed();
-            Console.WriteLine();
             Console.ReadKey();
         }
     }
