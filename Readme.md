@@ -19,24 +19,24 @@ Para a definição do modelo foi utilizada a rota [GET]/articles da API, nesta r
 
 ```json
 {
-    "id": integer,
-    "featured": bool,
-    "title": string,
-    "url": string,
-    "imageUrl": string,
-    "newsSite": string,
-    "summary": string,
-    "publishedAt": string,
+    "id": "integer",
+    "featured": "bool",
+    "title": "string",
+    "url": "string",
+    "imageUrl": "string",
+    "newsSite": "string",
+    "summary": "string",
+    "publishedAt": "string",
     "launches": [
       {
-        "id": string,
-        "provider": string
+        "id": "string",
+        "provider": "string"
       }
     ],
     "events": [
       {
-        "id": string,
-        "provider": string
+        "id": "string",
+        "provider": "string"
       }
     ]
   }

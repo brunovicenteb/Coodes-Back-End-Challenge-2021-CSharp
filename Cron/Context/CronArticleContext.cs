@@ -12,6 +12,7 @@ using MongoDB.Bson;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
+using Coodesh.Back.End.Challenge2021.CSharp.Cron.Entities;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
 {
@@ -22,7 +23,8 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
         private const int _Limit = 1000;
         public CronArticleContext(string pConnectionString, string pDataBaseName, string pCollectionName, int pMax = -1)
         {
-            var client = new MongoClient(pConnectionString);
+            var settings = MongoClientSettings.FromConnectionString(pConnectionString);
+            var client = new MongoClient(settings);
             _DB = client.GetDatabase(pDataBaseName);
             _Max = pMax;
         }
@@ -33,6 +35,8 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
 
         public void Seed()
         {
+            var logs = _DB.GetCollection<Logs>("Logs");
+            logs.InsertOne(new Logs() { Title = "CronLog", ExecAt = DateTime.UtcNow });
             using (HttpClient c = new HttpClient())
             {
                 Stopwatch st = Stopwatch.StartNew();

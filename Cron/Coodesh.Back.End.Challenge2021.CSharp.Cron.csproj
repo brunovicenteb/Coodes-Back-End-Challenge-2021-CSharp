@@ -25,4 +25,21 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Coodesh.Back.End.Challenge2021.CSharp.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="crontab">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="crontab.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="cron_task.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="run_app.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="sincronize-articles.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

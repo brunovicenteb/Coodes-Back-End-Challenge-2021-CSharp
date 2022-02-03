@@ -1,0 +1,5 @@
+# Run every 5 minutes
+#*/5 * * * * /root/cron_task.sh /root/run_app.sh
+*/5 * * * * /app/run_app.sh
+
+# cron needs an empty line at the end, leave this here.

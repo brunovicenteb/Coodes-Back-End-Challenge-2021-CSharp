@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Coodesh.Back.End.Challenge2021.CSharp.Cron": {
-      "commandName": "Project",
-      "commandLineArgs": "mongodb://localhost:27017 BackEndChallengeDB Articles"
+      "commandName": "Project"
     }
   }
 }

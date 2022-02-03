@@ -1,0 +1,4 @@
+# Run every 10 minutes
+*/10 * * * * /root/cron_task.sh /root/run_app.sh
+
+# cron needs an empty line at the end, leave this here.

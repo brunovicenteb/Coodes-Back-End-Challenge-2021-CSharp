@@ -8,15 +8,20 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron
     {
         public static void Main(string[] pArgs)
         {
-            string connectionString = pArgs[0]; //mongodb://localhost:27017,
-            string dataBaseName = pArgs[1]; //BackEndChallengeDB",
-            string collectionName = pArgs[2]; //Articles 
+            string connectionString = "mongodb+srv://brunovicenteb-Coodes-Back-End-Challenge-2021-CSharp:pDLvrVa4m0LUDmKc@cluster0.udphe.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+            string dataBaseName = "BackEndChallengeDB";
+            string collectionName = "Articles";
+            if (pArgs != null && pArgs.Length == 3)
+            {
+                connectionString = pArgs[0]; //mongodb://localhost:27017,
+                dataBaseName = pArgs[1]; //BackEndChallengeDB",
+                collectionName = pArgs[2]; //Articles 
+            }
             Console.WriteLine($"ConectionString: {connectionString};");
             Console.WriteLine($"DataBaseName: {dataBaseName};");
             Console.WriteLine($"CollectionName: {collectionName};");
             CronArticleContext ct = new CronArticleContext(connectionString, dataBaseName, collectionName, -1);
             ct.Seed();
-            Console.ReadKey();
         }
     }
 }
