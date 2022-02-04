@@ -1,4 +1,5 @@
 ﻿using Coodesh.Back.End.Challenge2021.CSharp.Cron.Context;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Diagnostics;
 
@@ -8,15 +9,14 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron
     {
         public static void Main(string[] pArgs)
         {
-            string connectionString = "mongodb+srv://brunovicenteb-Coodes-Back-End-Challenge-2021-CSharp:pDLvrVa4m0LUDmKc@cluster0.udphe.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-            string dataBaseName = "BackEndChallengeDB";
-            string collectionName = "Articles";
-            if (pArgs != null && pArgs.Length == 3)
-            {
-                connectionString = pArgs[0];
-                dataBaseName = pArgs[1];
-                collectionName = pArgs[2];
-            }
+            IConfiguration config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .AddCommandLine(pArgs)
+                .Build();
+            var connectionString = config.GetValue<string>("DataBaseSettings:ConnectionString");
+            var dataBaseName = config.GetValue<string>("DataBaseSettings:DataBaseName");
+            var collectionName = config.GetValue<string>("DataBaseSettings:CollectionName");
             Console.WriteLine($"ConectionString: {connectionString};");
             Console.WriteLine($"DataBaseName: {dataBaseName};");
             Console.WriteLine($"CollectionName: {collectionName};");

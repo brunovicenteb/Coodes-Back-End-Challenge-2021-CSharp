@@ -27,5 +27,10 @@
   </ItemGroup>  
   <ItemGroup>
     <ProjectReference Include="..\Core\Coodesh.Back.End.Challenge2021.CSharp.Core.csproj" />
+  </ItemGroup>  
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>
