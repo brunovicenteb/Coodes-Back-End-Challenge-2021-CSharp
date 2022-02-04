@@ -29,15 +29,6 @@
     <None Update="crontab">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="crontab.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="cron_task.sh">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="run_app.sh">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="sincronize-articles.sh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

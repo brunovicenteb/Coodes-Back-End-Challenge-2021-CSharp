@@ -1,1 +1,0 @@
-env - `cat rootenv.sh` binbash -c $1  varlogcron.log 2&1
