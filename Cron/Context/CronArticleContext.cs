@@ -13,6 +13,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using Coodesh.Back.End.Challenge2021.CSharp.Cron.Entities;
+using System.Text;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
 {
@@ -20,7 +21,9 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
     {
         private const string _UrlCount = "https://api.spaceflightnewsapi.net/v3/articles/count";
         private const string _UrlArticles = "https://api.spaceflightnewsapi.net/v3/articles?_start={0}&_limit={1}";
+        private readonly string _ErrosSeparator = Environment.NewLine + new string('#', 80) + Environment.NewLine;
         private const int _Limit = 1000;
+
         public CronArticleContext(string pConnectionString, string pDataBaseName, string pCollectionName, int pMax = -1)
         {
             var settings = MongoClientSettings.FromConnectionString(pConnectionString);
@@ -36,7 +39,9 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
         public void Seed()
         {
             var logs = _DB.GetCollection<Logs>("Logs");
-            logs.InsertOne(new Logs() { Title = "CronLog", ExecAt = DateTime.UtcNow });
+            Logs l = new Logs() { Title = "CronLog", Details = "Just began", ExecAt = DateTime.UtcNow };
+            logs.InsertOne(l);
+            var erros = new ConcurrentStack<Exception>();
             using (HttpClient c = new HttpClient())
             {
                 Stopwatch st = Stopwatch.StartNew();
@@ -47,12 +52,16 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
                     count = Math.Min(count, _Max);
                 int slices = (int)Math.Ceiling(Convert.ToDecimal(count) / _Limit);
                 Console.WriteLine($"Exists {count} articles to process. Wait...");
-                Parallel.For(0, slices, i => SearchSlice(i, count, c));
-                Console.WriteLine($"MongoDB Bulk Process {Interlocked.Read(ref _Count)} in {st.ElapsedMilliseconds} ms.");
+                Parallel.For(0, slices, i => SearchSlice(i, count, c, erros));
+                l.Details = $"MongoDB Bulk Process {Interlocked.Read(ref _Count)} Articles in {st.ElapsedMilliseconds} ms.";
+                Console.WriteLine($"MongoDB Bulk Process {Interlocked.Read(ref _Count)} Articles in {st.ElapsedMilliseconds} ms.");
             }
+            if (erros.Count > 0)
+                l.Details += $"[{erros.Count} Error(s)]{Environment.NewLine}{string.Join(_ErrosSeparator, erros.Select(o => o.Message))}";
+            logs.ReplaceOne(o => o.ObjectID == l.ObjectID, l);
         }
 
-        private void SearchSlice(int pIterator, int pTotal, HttpClient pClient)
+        private void SearchSlice(int pIterator, int pTotal, HttpClient pClient, ConcurrentStack<Exception> pErros)
         {
             try
             {
@@ -73,6 +82,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
             }
             catch (Exception ex)
             {
+                pErros.Push(ex);
                 Console.WriteLine($"Exception Iterator{pIterator} => {ex.Message}");
             }
         }

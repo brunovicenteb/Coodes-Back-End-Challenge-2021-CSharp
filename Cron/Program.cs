@@ -13,9 +13,9 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron
             string collectionName = "Articles";
             if (pArgs != null && pArgs.Length == 3)
             {
-                connectionString = pArgs[0]; //mongodb://localhost:27017,
-                dataBaseName = pArgs[1]; //BackEndChallengeDB",
-                collectionName = pArgs[2]; //Articles 
+                connectionString = pArgs[0];
+                dataBaseName = pArgs[1];
+                collectionName = pArgs[2];
             }
             Console.WriteLine($"ConectionString: {connectionString};");
             Console.WriteLine($"DataBaseName: {dataBaseName};");

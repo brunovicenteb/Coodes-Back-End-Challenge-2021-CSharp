@@ -40,5 +40,4 @@ RUN chmod 755 /app/script.sh /app/entry.sh
 RUN /usr/bin/crontab /app/crontab.txt
 RUN touch /var/log/script.log
 
-#ENTRYPOINT ["dotnet", "Coodesh.Back.End.Challenge2021.CSharp.Api.dll"]
-CMD ["/app/entry.sh"]
+ENTRYPOINT ["/app/entry.sh"]

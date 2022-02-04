@@ -23,6 +23,12 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Entities
             get; set;
         }
 
+        [BsonRepresentation(BsonType.String)]
+        public string Details
+        {
+            get; set;
+        }
+
         [BsonRepresentation(BsonType.DateTime)]
         public DateTime ExecAt
         {

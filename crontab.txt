@@ -1,1 +1,1 @@
-* * * * * /app/script.sh >> /var/log/script.log
+*/5 * * * * /app/script.sh >> /var/log/script.log

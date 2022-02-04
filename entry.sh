@@ -1,6 +1,6 @@
 #!/bin/sh
 
 # start cron
-#/usr/sbin/crond -f -l 8
-cron 
-tail -f /var/log/script.log
+cron
+# start server
+dotnet Coodesh.Back.End.Challenge2021.CSharp.Api.dll
