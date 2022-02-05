@@ -17,10 +17,15 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+            Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.UseStartup<Startup>();
+            webBuilder.UseUrls("http://*:" + GetPort());
+        });
+
+        private static string GetPort()
+        {
+            return Environment.GetEnvironmentVariable("PORT") ?? "80";
+        }
     }
 }
