@@ -2,6 +2,7 @@ version: '3.4'
 
 services:
   coodesh-api:
+    container_name: coodesh.api
     build:
       context: .
       dockerfile: Dockerfile
