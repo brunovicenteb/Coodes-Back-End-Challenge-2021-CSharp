@@ -4,6 +4,8 @@ Essa é uma REST API criada por **Bruno Belchior**, cujo propósito é demonstra
 
 >  This is a challenge by [Coodesh](https://coodesh.com/)
 
+Uma versão desse mesmo em execução está [disponível](https://coodesh-backend-challenge.herokuapp.com), na hospedagem gratuita fornecida pela Heroku. Para ver a documentação disponível no formato Open API 3.0 basta acessar [esse link](https://coodesh-backend-challenge.herokuapp.com/swagger/index.html).
+
 ### Tecnologias utilizadas no desenvolvimento do projeto
 
 <table>
