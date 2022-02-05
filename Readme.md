@@ -39,62 +39,50 @@ Essa é uma REST API criada por **Bruno Belchior**, cujo propósito é demonstra
   </tr>    
 </table>
 
-### Back-End Challenge:
+## Armazenamento dos dados
 
-Nessa etapa você deverá construir uma API Restful com as melhores práticas de desenvolvimento, baseada na API [Space Flight News](https://api.spaceflightnewsapi.net/v3/documentation). Para isso você deve executar os passos a seguir:
+Conforme informado na tabela acima, o banco de dados utilizado foi o **MongoDB** e está armazenado de forma gratutíta no [Atlas](https://www.mongodb.com/cloud/atlas).
 
-**Obrigatório 1** - Você deverá desenvolver as seguintes rotas. **IMPLEMENTADO**
+## Pré-requisitos para a instalação do projeto:
 
-- `[GET]/: ` Retornar um Status: 200 e uma Mensagem "Back-end Challenge 2021 🏅 - Space Flight News"
-- `[GET]/articles/:`   Listar todos os artigos da base de dados, utilizar o sistema de paginação para não sobrecarregar a REQUEST
-- `[GET]/articles/{id}:` Obter a informação somente de um artigo
-- `[POST]/articles/:` Adicionar um novo artigo
-- `[PUT]/articles/{id}:` Atualizar um artigo baseado no `id`
-- `[DELETE]/articles/{id}:` Remover um artigo baseado no `id`
++ Git
++ Docker
++ Docker-compose
 
-**Obrigatório 2** - Para alimentar o seu banco de dados você deve criar um script para armazenar os dados de todos os artigos na Space Flight News API.  **IMPLEMENTADO**
+## Instalação do projeto e configuração do ambiente:
 
-**Obrigatório 3** - Além disso você precisa desenvolver um CRON para ser executado diariamente às 9h e armazenar em seu os novos artigos ao seu banco de dados. (Para essa tarefa você poderá alterar o seu modelo de dados).  **IMPLEMENTADO**
+1. Clonar o repositório:
 
-**Diferencial 1** Configurar Docker no Projeto para facilitar o Deploy da equipe de DevOps; **IMPLEMENTADO**
+   `
+   git clone https://github.com/brunovicenteb/Coodes-Back-End-Challenge-2021-CSharp.git
+   `
 
-**Diferencial 2** Configurar um sistema de alerta se houver algum falha durante a sincronização dos artigos; **IMPLEMENTADO**
+2. Entrar no diretório criado:
 
-**Diferencial 3** Descrever a documentação da API utilizando o conceito de Open API 3.0; **IMPLEMENTADO**
+   `
+   cd Coodes-Back-End-Challenge-2021-CSharp
+   `
 
-- `[GET]/swagger/index.html ` URL para acesso
+4. Subir o container:
 
-**Diferencial 4** Escrever Unit Tests para os endpoints da API;
+   `
+   docker-compose -p challenge up -d
+   `
+  
+Nesse momento a **já é possível acessar** a [API](http://localhost:8000/) e a [documentação](http://localhost:8000/swagger/index.html) no formato Open API 3.0; pelo navegador.
 
-## Readme do Repositório
+## Alimentação dos dados via script
 
-- Deve conter o título do projeto
-- Uma descrição sobre o projeto em frase
-- Deve conter uma lista com linguagem, framework e/ou tecnologias usadas
-- Como instalar e usar o projeto (instruções)
-- Não esqueça o [.gitignore](https://www.toptal.com/developers/gitignore)
-- Se está usando github pessoal, referencie que é um challenge by coodesh:  
+1. Conectar no terminal do container:
 
->  This is a challenge by [Coodesh](https://coodesh.com/)
+   `
+   docker exec -ti coodesh.api /bin/bash
+   `
+   
+2. Executar o script de alimentação de dados:
 
->  docker build --no-cache -t coodesh-api:dev .
+   `
+   ./script.sh
+   `
 
->  docker run -d -p 17133:80 --name bb-codesh coodesh-api:dev
-
-## Finalização e Instruções para a Apresentação
-
-Avisar sobre a finalização e enviar para correção.
-
-1. Confira se você respondeu o Scorecard da Vaga que chegou no seu email; **FEITO**
-2. Confira se você respondeu o Mapeamento Comportamental que chegou no seu email; **FEITO**
-3. Acesse: [https://coodesh.com/challenges/review](https://coodesh.com/challenges/review);
-4. Adicione o repositório com a sua solução;
-5. Grave um vídeo, com no máximo 5 minutos, com a apresentação do seu projeto. Foque em pontos obrigatórios e diferenciais quando for apresentar. **NÃO FEITO**
-6. Adicione o link da apresentação do seu projeto no README.md. **NÃO FEITO**
-7. Verifique se o Readme está bom e faça o commit final em seu repositório; **NÃO FEITO**
-8. Confira a vaga desejada;
-9. Envie e aguarde as instruções para seguir no processo. Sucesso e boa sorte. =)
-
-<a target="_blank" href="https://www.linkedin.com/in/brunovicenteb/"> 
-  <img align="left" alt="LinkdeIN" width="22px" src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/linkedin.svg" />
-</a>
+Após a execução do script o banco já estará povoado com todos os dados de voos espaciai. **Não é necessário qualquer configuração do crontab**, o container já é iniciado com toda a configuração necessária.
