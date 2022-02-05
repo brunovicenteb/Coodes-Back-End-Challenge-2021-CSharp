@@ -41,7 +41,7 @@ Essa é uma REST API criada por **Bruno Belchior**, cujo propósito é demonstra
 
 ## Armazenamento dos dados
 
-Conforme informado na tabela acima, o banco de dados utilizado foi o **MongoDB** e está armazenado de forma gratutíta no [Atlas](https://www.mongodb.com/cloud/atlas).
+Conforme informado na tabela acima, o banco de dados utilizado foi o **MongoDB** e está armazenado de forma gratuita no [Atlas](https://www.mongodb.com/cloud/atlas).
 
 ## Pré-requisitos para a instalação do projeto:
 
@@ -69,7 +69,7 @@ Conforme informado na tabela acima, o banco de dados utilizado foi o **MongoDB**
    docker-compose -p challenge up -d
    `
   
-Nesse momento a **já é possível acessar** a [API](http://localhost:8000/) e a [documentação](http://localhost:8000/swagger/index.html) no formato Open API 3.0; pelo navegador.
+Nessa etapa **já é possível acessar** a [API](http://localhost:8000/) e a [documentação](http://localhost:8000/swagger/index.html) no formato Open API 3.0; pelo navegador.
 
 ## Alimentação dos dados via script
 
