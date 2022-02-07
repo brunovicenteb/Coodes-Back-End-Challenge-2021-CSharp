@@ -2,14 +2,15 @@
 using MongoDB.Bson;
 using System.Text.Json.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
+using Coodesh.Back.End.Challenge2021.CSharp.Entities.Notifications;
 
-namespace Coodesh.Back.End.Challenge2021.CSharp.Core.Entities
+namespace Coodesh.Back.End.Challenge2021.CSharp.Entities.Entities
 {
-    public class Events
+    public class XLaunche : XNotifies
     {
         [JsonPropertyName("id")]
-        [BsonRepresentation(BsonType.Int32)]
-        public int ID
+        [BsonRepresentation(BsonType.String)]
+        public Guid ID
         {
             get; set;
         }

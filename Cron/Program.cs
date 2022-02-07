@@ -1,7 +1,6 @@
-﻿using Coodesh.Back.End.Challenge2021.CSharp.Cron.Context;
+﻿using System;
+using Coodesh.Back.End.Challenge2021.CSharp.Cron.Context;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Diagnostics;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Cron
 {

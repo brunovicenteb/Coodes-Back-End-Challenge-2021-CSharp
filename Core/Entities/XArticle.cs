@@ -1,22 +1,16 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using System.Text.Json.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
+using Coodesh.Back.End.Challenge2021.CSharp.Entities.Notifications;
 
-namespace Coodesh.Back.End.Challenge2021.CSharp.Core.Entities
+namespace Coodesh.Back.End.Challenge2021.CSharp.Entities.Entities
 {
-    public class Article
+    public class XArticle : XArtifact
     {
         [BsonId]
         [JsonIgnore]
         [BsonRepresentation(BsonType.ObjectId)]
         public string ObjectID
-        {
-            get; set;
-        }
-
-        [JsonPropertyName("id")]
-        [BsonRepresentation(BsonType.Int32)]
-        public int ID
         {
             get; set;
         }
@@ -78,14 +72,14 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Core.Entities
         }
 
         [JsonPropertyName("launches")]
-        public Launche[] Launches
+        public XLaunche[] Launches
         {
             get; set;
         }
 
 
         [JsonPropertyName("events")]
-        public Events[] Events
+        public XEvents[] Events
         {
             get; set;
         }

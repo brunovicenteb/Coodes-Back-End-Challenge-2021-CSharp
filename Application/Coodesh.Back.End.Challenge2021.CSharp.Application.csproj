@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>Coodesh.Back.End.Challenge2021.CSharp.Application</AssemblyName>
+    <RootNamespace>Coodesh.Back.End.Challenge2021.CSharp.Application</RootNamespace>	
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <PackageId>Coodesh.Back.End.Challenge2021.CSharp.Application</PackageId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\bin\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Coodesh.Back.End.Challenge2021.CSharp.Entities.csproj" />
+    <ProjectReference Include="..\Domain\Coodesh.Back.End.Challenge2021.CSharp.Domain.csproj" />
+  </ItemGroup>  
+</Project>

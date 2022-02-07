@@ -1,12 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Coodesh.Back.End.Challenge2021.CSharp.Core.Entities;
-using Coodesh.Back.End.Challenge2021.CSharp.Core.Data;
 using System;
 using MongoDB.Bson;
 using System.Collections.Concurrent;
@@ -14,10 +11,11 @@ using System.Diagnostics;
 using System.Threading;
 using Coodesh.Back.End.Challenge2021.CSharp.Cron.Entities;
 using System.Text;
+using Coodesh.Back.End.Challenge2021.CSharp.Entities.Entities;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
 {
-    public class CronArticleContext : BaseArticleContext
+    public class CronArticleContext
     {
         private const string _UrlCount = "https://api.spaceflightnewsapi.net/v3/articles/count";
         private const string _UrlArticles = "https://api.spaceflightnewsapi.net/v3/articles?_start={0}&_limit={1}";
@@ -70,11 +68,11 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
                 string url = string.Format(_UrlArticles, start, limit);
                 using (var st = pClient.GetStreamAsync(url).Result)
                 {
-                    List<Article> articles = JsonSerializer.DeserializeAsync<List<Article>>(st).Result;
+                    List<XArticle> articles = JsonSerializer.DeserializeAsync<List<XArticle>>(st).Result;
                     if (articles.Count == 0)
                         return;
-                    List<WriteModel<Article>> bag = new List<WriteModel<Article>>();
-                    var dbArticles = _DB.GetCollection<Article>("Articles");
+                    List<WriteModel<XArticle>> bag = new List<WriteModel<XArticle>>();
+                    var dbArticles = _DB.GetCollection<XArticle>("Articles");
                     articles.ForEach(a => CreateUpdateModel(a, bag));
                     var result = dbArticles.BulkWrite(bag);
                     Interlocked.Add(ref _Count, bag.Count);
@@ -87,11 +85,11 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
             }
         }
 
-        private void CreateUpdateModel(Article pArticle, List<WriteModel<Article>> pBag)
+        private void CreateUpdateModel(XArticle pArticle, List<WriteModel<XArticle>> pBag)
         {
-            var up = new UpdateManyModel<Article>(
-                Builders<Article>.Filter.Where(p => p.ID == pArticle.ID),
-                Builders<Article>.Update
+            var up = new UpdateManyModel<XArticle>(
+                Builders<XArticle>.Filter.Where(p => p.ID == pArticle.ID),
+                Builders<XArticle>.Update
                     .SetOnInsert(p => p.Featured, pArticle.Featured)
                     .SetOnInsert(p => p.Title, pArticle.Title)
                     .SetOnInsert(p => p.Url, pArticle.Url)

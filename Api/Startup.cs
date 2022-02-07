@@ -1,14 +1,20 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using Coodesh.Back.End.Challenge2021.CSharp.Core.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Http;
-using System.Text;
+using Coodesh.Back.End.Challenge2021.CSharp.Application.Interfaces;
+using Coodesh.Back.End.Challenge2021.CSharp.Application.OpenApp;
+using Coodesh.Back.End.Challenge2021.CSharp.Core.Services;
+using Coodesh.Back.End.Challenge2021.CSharp.Core.Interfaces.InterfaceServices;
+using Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces.Generics;
+using Coodesh.Back.End.Challenge2021.CSharp.Core.Interfaces.InterfaceArticle;
+using Coodesh.Back.End.Challenge2021.CSharp.Infrastructure.Repository.Generics;
+using Coodesh.Back.End.Challenge2021.CSharp.Core.Repository.Repositories;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Api
 {
@@ -26,7 +32,9 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api
 
         public void ConfigureServices(IServiceCollection pServices)
         {
-            pServices.AddScoped<IArticleContext, ArticleContext>();
+            pServices.AddScoped<XIArticle, XRepositoryArticle>();
+            pServices.AddScoped<XIServiceArticle, XServiceArticle>();
+            pServices.AddScoped<XIArticleApp, XAppArticle>();
             pServices.AddControllers();
             pServices.AddSwaggerGen(opt =>
             {
