@@ -6,7 +6,5 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Application.Interfaces
 {
     public interface XIArticleApp : XInterfaceBaseApp<XArticle>
     {
-        Task AddArticle(XArticle pArticle);
-        Task UpdateArticle(XArticle pArticle);
     }
 }
