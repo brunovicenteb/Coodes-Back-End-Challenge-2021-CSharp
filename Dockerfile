@@ -9,20 +9,36 @@ RUN apt-get update -qq && apt-get -y install cron -qq --force-yes
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR "/src"
 COPY ["Coodesh.Back.End.Challenge2021.CSharp.sln", "./"]
-COPY ["Core/Coodesh.Back.End.Challenge2021.CSharp.Core.csproj", "Core/"]
+COPY ["Toolkit/Coodesh.Back.End.Challenge2021.CSharp.Toolkit.csproj", "Toolkit/"]
+COPY ["Domain/Coodesh.Back.End.Challenge2021.CSharp.Domain.csproj", "Domain/"]
+COPY ["Infra/Coodesh.Back.End.Challenge2021.CSharp.Infra.csproj", "Infra/"]
+COPY ["Service/Coodesh.Back.End.Challenge2021.CSharp.Service.csproj", "Service/"]
 COPY ["Api/Coodesh.Back.End.Challenge2021.CSharp.Api.csproj", "Api/"]
 COPY ["Cron/Coodesh.Back.End.Challenge2021.CSharp.Cron.csproj", "Cron/"]
+COPY ["Test/Coodesh.Back.End.Challenge2021.CSharp.Test.csproj", "Test/"]
 
 RUN dotnet restore
 COPY . .
 
-WORKDIR "/src/Core"
+WORKDIR "/src/Toolkit"
+RUN dotnet build -c Release -o /app
+
+WORKDIR "/src/Domain"
+RUN dotnet build -c Release -o /app
+
+WORKDIR "/src/Infra"
+RUN dotnet build -c Release -o /app
+
+WORKDIR "/src/Service"
 RUN dotnet build -c Release -o /app
 
 WORKDIR "/src/Api"
 RUN dotnet build -c Release -o /app
 
 WORKDIR "/src/Cron"
+RUN dotnet build -c Release -o /app
+
+WORKDIR "/src/Test"
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish
