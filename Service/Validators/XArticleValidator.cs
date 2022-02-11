@@ -8,13 +8,13 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Service.Validators
         public XArticleValidator()
         {
             RuleFor(c => c.Title)
-                .NotEmpty().WithMessage("Título não informado.");
+                .NotEmpty().WithMessage("Title not informed.");
 
             RuleFor(c => c.Url)
-                .NotEmpty().WithMessage("Url não informada.");
+                .NotEmpty().WithMessage("Url not informed.");
 
             RuleFor(c => c.ImageUrl)
-                .NotEmpty().WithMessage("ImageUrl não informada.");
+                .NotEmpty().WithMessage("ImageUrl not informed.");
         }
     }
 }
