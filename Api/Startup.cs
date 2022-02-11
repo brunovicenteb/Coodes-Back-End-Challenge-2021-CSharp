@@ -64,7 +64,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", (c) => c.Response.WriteAsync("Back-end Challenge 2021 - Space Flight New [TESTE HEROKU]"));
+                endpoints.MapGet("/", (c) => c.Response.WriteAsync("Back-end Challenge 2021 - Space Flight New"));
                 endpoints.MapDefaultControllerRoute();
             });
         }
