@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Moq" Version="4.16.1" />
+    <None Remove="Mock\ArticlesData.dat" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ArticlesData.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.14" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
@@ -15,7 +23,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Api\Coodesh.Back.End.Challenge2021.CSharp.Api.csproj" />
-    <ProjectReference Include="..\Core\Coodesh.Back.End.Challenge2021.CSharp.Entities.csproj" />
+    <ProjectReference Include="..\Domain\Coodesh.Back.End.Challenge2021.CSharp.Domain.csproj" />
   </ItemGroup>
+
 
 </Project>

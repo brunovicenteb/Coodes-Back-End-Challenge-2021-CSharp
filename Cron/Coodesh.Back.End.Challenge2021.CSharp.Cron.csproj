@@ -23,7 +23,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Coodesh.Back.End.Challenge2021.CSharp.Entities.csproj" />
+    <ProjectReference Include="..\Domain\Coodesh.Back.End.Challenge2021.CSharp.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="crontab">

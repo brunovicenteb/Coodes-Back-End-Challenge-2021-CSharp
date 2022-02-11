@@ -1,35 +1,33 @@
-﻿using System;
+using System;
 using System.IO;
+using AutoMapper;
 using System.Reflection;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Http;
-using Coodesh.Back.End.Challenge2021.CSharp.Application.Interfaces;
-using Coodesh.Back.End.Challenge2021.CSharp.Application.OpenApp;
-using Coodesh.Back.End.Challenge2021.CSharp.Core.Interfaces.InterfaceArticle;
-using Coodesh.Back.End.Challenge2021.CSharp.Core.Repository.Repositories;
+using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
+using Coodesh.Back.End.Challenge2021.CSharp.Service.Services;
+using Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces;
+using Coodesh.Back.End.Challenge2021.CSharp.Infra.Repository;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Api
 {
     public class Startup
     {
-        public IConfiguration Configuration
+        public Startup(IConfiguration configuration)
         {
-            get;
+            Configuration = configuration;
         }
 
-        public Startup(IConfiguration pConfiguration)
-        {
-            Configuration = pConfiguration;
-        }
+        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection pServices)
         {
-            pServices.AddScoped<XIArticle, XRepositoryArticle>();
-            pServices.AddScoped<XIArticleApp, XAppArticle>();
+            pServices.AddScoped<XIArticleService, XArticleService>();
+            pServices.AddScoped<XIArticleRepository, XArticleRepository>();
             pServices.AddControllers();
             pServices.AddSwaggerGen(opt =>
             {
@@ -52,6 +50,10 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 opt.IncludeXmlComments(xmlPath);
             });
+            pServices.AddSingleton(new MapperConfiguration(config =>
+            {
+                config.CreateMap<XArticle, XArticle>();
+            }).CreateMapper());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

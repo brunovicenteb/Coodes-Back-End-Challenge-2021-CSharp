@@ -19,7 +19,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron
             Console.WriteLine($"ConectionString: {connectionString};");
             Console.WriteLine($"DataBaseName: {dataBaseName};");
             Console.WriteLine($"CollectionName: {collectionName};");
-            CronArticleContext ct = new CronArticleContext(connectionString, dataBaseName, collectionName, -1);
+            XCronArticleContext ct = new XCronArticleContext(connectionString, dataBaseName, collectionName, -1);
             ct.Seed();
         }
     }

@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
+
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
-		<StartupObject></StartupObject>
 	</PropertyGroup>
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -13,21 +13,13 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<OutputPath>..\bin\</OutputPath>
 	</PropertyGroup>
-
+	
 	<ItemGroup>
-		<Compile Remove="Models\**" />
-		<Content Remove="Models\**" />
-		<EmbeddedResource Remove="Models\**" />
-		<None Remove="Models\**" />
+		<PackageReference Include="MongoDB.Driver" Version="2.14.1" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="AutoMapper" Version="10.1.1" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
-	</ItemGroup>
-
+	
 	<ItemGroup>
 	  <ProjectReference Include="..\Domain\Coodesh.Back.End.Challenge2021.CSharp.Domain.csproj" />
-	  <ProjectReference Include="..\Service\Coodesh.Back.End.Challenge2021.CSharp.Service.csproj" />
 	</ItemGroup>
+
 </Project>
