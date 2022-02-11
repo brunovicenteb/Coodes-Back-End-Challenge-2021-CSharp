@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  CAMINHO_PROJETO_TESTES: ./Test/
+  CAMINHO_PROJETO_TESTES: ./Test
   CAMINHO_PROJETO: ./Test/Coodesh.Back.End.Challenge2021.CSharp.Test.csproj
   NUGET_SERVER: https://api.nuget.org/v3/index.json
 
