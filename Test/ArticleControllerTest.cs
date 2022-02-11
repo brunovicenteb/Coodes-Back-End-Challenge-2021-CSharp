@@ -8,6 +8,7 @@ using Coodesh.Back.End.Challenge2021.CSharp.Service.Services;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
 using AutoMapper;
+using System;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Test
 {
@@ -37,6 +38,26 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
         }
 
         [Test]
+        public void TestEndpointCreateArticleWithErrors()
+        {
+            ArticleController c = CreateController();
+            IActionResult result = c.Articles(null);
+            AssertError(result, "Invalid Article.");
+
+            XArticle a = CreateArticleObject(5789654, null, null, null);
+            result = c.Articles(a);
+            AssertError(result, $"Validation failed: {Environment.NewLine} -- Title: Título não informado.{Environment.NewLine} -- Url: Url não informada.{Environment.NewLine} -- ImageUrl: ImageUrl não informada.");
+
+            a.Title = "Starlink Mission";
+            result = c.Articles(a);
+            AssertError(result, $"Validation failed: {Environment.NewLine} -- Url: Url não informada.{Environment.NewLine} -- ImageUrl: ImageUrl não informada.");
+
+            a.Url = "This is a Url content";
+            result = c.Articles(a);
+            AssertError(result, $"Validation failed: {Environment.NewLine} -- ImageUrl: ImageUrl não informada.");
+        }
+
+        [Test]
         public void TestEndpointUpdateArticle()
         {
             ArticleController c = CreateController(true);
@@ -57,6 +78,35 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
         }
 
         [Test]
+        public void TestEndpointUpdateArticleErrors()
+        {
+            ArticleController c = CreateController(true);
+            IActionResult result = c.ArticlesPut(4067, null);
+            AssertError(result, "Invalid Article.");
+
+            result = c.Articles(4067); // Starlink Mission
+            Assert.IsInstanceOf<OkObjectResult>(result);
+            OkObjectResult okResult = (OkObjectResult)result;
+            Assert.IsInstanceOf<XArticle>(okResult.Value);
+            XArticle a = (XArticle)okResult.Value;
+
+            result = c.ArticlesPut(154787985, a);
+            AssertNotFoundError(result, "Article 154787985 not found.");
+
+            a.Title = a.Url = a.ImageUrl = string.Empty;
+            result = c.ArticlesPut(4067, a);
+            AssertError(result, $"Validation failed: {Environment.NewLine} -- Title: Título não informado.{Environment.NewLine} -- Url: Url não informada.{Environment.NewLine} -- ImageUrl: ImageUrl não informada.");
+
+            a.Title = "Starlink Mission";
+            result = c.ArticlesPut(4067, a);
+            AssertError(result, $"Validation failed: {Environment.NewLine} -- Url: Url não informada.{Environment.NewLine} -- ImageUrl: ImageUrl não informada.");
+
+            a.Url = "This is a Url content";
+            result = c.ArticlesPut(4067, a);
+            AssertError(result, $"Validation failed: {Environment.NewLine} -- ImageUrl: ImageUrl não informada.");
+        }
+
+        [Test]
         public void TestEndpointGetArticleByID()
         {
             ArticleController c = CreateController(true);
@@ -66,6 +116,14 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
             Assert.IsInstanceOf<XArticle>(okResult.Value);
             XArticle a = (XArticle)okResult.Value;
             AssertStarlinkMission(a);
+        }
+
+        [Test]
+        public void TestEndpointGetArticleByIDError()
+        {
+            ArticleController c = CreateController(true);
+            IActionResult result = c.Articles(989857457);
+            AssertNotFoundError(result, "Article 989857457 not found.");
         }
 
         [Test]
@@ -160,6 +218,22 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
             return c;
         }
 
+        private void AssertNotFoundError(IActionResult pResult, string pMessage)
+        {
+            Assert.IsInstanceOf<NotFoundObjectResult>(pResult);
+            NotFoundObjectResult errorResult = (NotFoundObjectResult)pResult;
+            Assert.IsInstanceOf<string>(errorResult.Value);
+            Assert.AreEqual(pMessage, errorResult.Value);
+        }
+
+        private void AssertError(IActionResult pResult, string pMessage)
+        {
+            Assert.IsInstanceOf<BadRequestObjectResult>(pResult);
+            BadRequestObjectResult errorResult = (BadRequestObjectResult)pResult;
+            Assert.IsInstanceOf<string>(errorResult.Value);
+            Assert.AreEqual(pMessage, errorResult.Value);
+        }
+
         private T AssertOk<T>(IActionResult pResult, object pValue)
         {
             Assert.IsInstanceOf<OkObjectResult>(pResult);
@@ -183,29 +257,35 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
             Assert.AreEqual(0, pArticle.Events.Length);
         }
 
-        private XArticle CreateArticle(int? pID)
+        private XArticle CreateArticleObject(int? pID, string pTitle, string pUrl, string pImageUrl)
+        {
+            XArticle a = new XArticle();
+            if (pID.HasValue)
+                a.ID = pID.Value;
+            a.Featured = false;
+            a.Title = pTitle;
+            a.Summary = "On 24 January, 30 days after launch on Christmas Day, the James Webb Space Telescope...";
+            a.Url = pUrl;
+            a.ImageUrl = pImageUrl;
+            return a;
+        }
+
+        private XArticle CreateArticle(int? pID, string pTitle = "James Webb reach lagrange point 2", string pUrl = "This is a Url content", string pImageUrl = "This is a ImageUrl content")
         {
             ArticleController c = CreateController();
             long count = GetCount(c);
 
-            XArticle a = new XArticle();
-            if (pID.HasValue)
-                a.ID = pID.Value;
-            a.Featured = true;
-            a.Title = "James Webb reach lagrange point 2";
-            a.Summary = "On 24 January, 30 days after launch on Christmas Day, the James Webb Space Telescope...";
-            a.Url = "This is a Url content";
-            a.ImageUrl = "This is a ImageUrl content";
+            XArticle a = CreateArticleObject(pID, pTitle, pUrl, pImageUrl);
 
             IActionResult result = c.Articles(a);
             XArticle newArticle = AssertOk<XArticle>(result, a);
-            Assert.IsTrue(newArticle.Featured);
+            Assert.IsFalse(newArticle.Featured);
             Assert.IsTrue(string.IsNullOrEmpty(a.ObjectID));
             Assert.AreNotSame(a, newArticle);
-            Assert.AreEqual("James Webb reach lagrange point 2", newArticle.Title);
+            Assert.AreEqual(pTitle, newArticle.Title);
             Assert.AreEqual("On 24 January, 30 days after launch on Christmas Day, the James Webb Space Telescope...", newArticle.Summary);
-            Assert.AreEqual("This is a Url content", newArticle.Url);
-            Assert.AreEqual("This is a ImageUrl content", newArticle.ImageUrl);
+            Assert.AreEqual(pUrl, newArticle.Url);
+            Assert.AreEqual(pImageUrl, newArticle.ImageUrl);
             long newCount = GetCount(c);
             Assert.AreEqual(count + 1, newCount);
             return newArticle;

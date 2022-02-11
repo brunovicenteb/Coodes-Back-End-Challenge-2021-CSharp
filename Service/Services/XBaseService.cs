@@ -42,6 +42,8 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Service.Services
         public TOutputModel GetObjectByID<TOutputModel>(int pObjectID) where TOutputModel : class
         {
             var entity = _BaseRepository.GetObjectByID(pObjectID);
+            if (entity == null)
+                throw new XNotFoundException($"{EntityName} {pObjectID} not found.");
             var outputModel = _Mapper.Map<TOutputModel>(entity);
             return outputModel;
         }
