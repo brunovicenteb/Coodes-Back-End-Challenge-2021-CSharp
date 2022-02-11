@@ -9,7 +9,7 @@ on:
 
 env:
   CAMINHO_PROJETO_TESTES: ./bin
-  CAMINHO_PROJETO: ./Tests/Coodesh.Back.End.Challenge2021.CSharp.Test.csproj
+  CAMINHO_PROJETO: ./Test/Coodesh.Back.End.Challenge2021.CSharp.Test.csproj
   NUGET_SERVER: https://api.nuget.org/v3/index.json
 
 jobs:
@@ -33,7 +33,7 @@ jobs:
       run: dotnet build --no-restore
 #      run: dotnet restore ${{ env.CAMINHO_PROJETO_TESTES }}      
 
-    - name: Testes com .NET 5 + Coverlet
+    - name: Testes com MsTest + Coverlet
       run: dotnet test --verbosity minimal --logger:"html;LogFileName=resultado-testes.html" --collect:"XPlat Code Coverage"    
 #      run: dotnet test ${{ env.CAMINHO_PROJETO_TESTES }} --verbosity minimal --logger:"html;LogFileName=resultado-testes.html" --collect:"XPlat Code Coverage"
 
