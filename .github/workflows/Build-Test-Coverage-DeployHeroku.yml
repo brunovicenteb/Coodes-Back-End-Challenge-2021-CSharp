@@ -42,13 +42,13 @@ jobs:
       if: always()
       run: dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.8.6
   
-    - name: Gerar relatório de cobertura de testes com ReportGenerator
-      if: always()
-      run: |
-        cd ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults
-        # Acessar diretório gerado com o XML de Cobertura de código
-        cd $(ls -d */|head -n 1)
-        reportgenerator "-reports:coverage.cobertura.xml" "-targetdir:coveragereport" -reporttypes:Html
+#    - name: Gerar relatório de cobertura de testes com ReportGenerator
+#      if: always()
+#      run: |
+#        cd ${{ env.CAMINHO_PROJETO_TESTES }}/TestResults
+#        # Acessar diretório gerado com o XML de Cobertura de código
+#        cd $(ls -d */|head -n 1)
+#        reportgenerator "-reports:coverage.cobertura.xml" "-targetdir:coveragereport" -reporttypes:Html
 
     - name: Upload como Artifact dos Reports de Resultado dos Testes + Cobertura de Código
       uses: actions/upload-artifact@v2.2.2
