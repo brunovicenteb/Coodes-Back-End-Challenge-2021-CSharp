@@ -7,20 +7,74 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  TESTS_PROJECT_PATH: ./Test
+  PROJECT_PATH: ./Test/Coodesh.Back.End.Challenge2021.CSharp.Test.csproj
+  NUGET_SERVER: https://api.nuget.org/v3/index.json
+  HEROKU_APP_NAME: coodesh-backend-challenge
+
 jobs:
-  build:
+  Build-Test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2.3.4
+    - name: Setup .NET 5
+      uses: actions/setup-dotnet@v1.7.2
+      with:
+        dotnet-version: 5.0.x
+        
+    - name: Restore Dependencies
+      run: dotnet restore
+#      run: dotnet restore ${{ env.TESTS_PROJECT_PATH }}
+      
+    - name: Build
+      run: dotnet build --no-restore
+#      run: dotnet restore ${{ env.TESTS_PROJECT_PATH }}      
+
+    - name: MSTest+Coverlet
+      run: dotnet test ${{ env.PROJECT_PATH }} --logger:"html;LogFileName=resultado-testes.html"
+#      run: dotnet test --verbosity minimal --logger:"html;LogFileName=resultado-testes.html" --collect:"XPlat Code Coverage"    
+#      run: dotnet test ${{ env.TESTS_PROJECT_PATH }} --verbosity minimal --logger:"html;LogFileName=resultado-testes.html" --collect:"XPlat Code Coverage"
+
+    - name: Install ReportGenerator
+      if: always()
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.8.6
+  
+#    - name: Gerar relatório de cobertura de testes com ReportGenerator
+#      if: always()
+#      run: |
+#        cd ${{ env.TESTS_PROJECT_PATH }}/TestResults
+#        # Acessar diretório gerado com o XML de Cobertura de código
+#        cd $(ls -d */|head -n 1)
+#        reportgenerator "-reports:coverage.cobertura.xml" "-targetdir:coveragereport" -reporttypes:Html
+
+    - name: Upload UnitTest and Cover Reports as Artifacts
+      uses: actions/upload-artifact@v2.2.2
+      env:
+        TESTS_PROJECT_PATH: ${{ env.TESTS_PROJECT_PATH }}/TestResults/
+      if: always()
+      with:
+        name: resultado-testes
+        path: ${{ env.TESTS_PROJECT_PATH }}
+        retention-days: 30
+
+  Deploy-To-Heroku:
+    needs: [Build-Test]  
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Login to Heroku Container registry
+    - name: Login to Heroku
       env: 
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       run: heroku container:login 
-    - name: Build and push
+      
+    - name: Build and Push
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:push -a coodesh-backend-challenge web 
-    - name: Release
+      run: heroku container:push -a ${{ env.HEROKU_APP_NAME }} web
+      
+    - name: Release Heroku App
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:release -a coodesh-backend-challenge web 
+      run: heroku container:release -a ${{ env.HEROKU_APP_NAME }} web 
