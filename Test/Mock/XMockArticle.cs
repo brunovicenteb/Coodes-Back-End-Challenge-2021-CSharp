@@ -55,7 +55,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test.Mock
         {
             int skip = pStart ?? 0;
             int limit = Math.Min(50, pLimit ?? 10);
-            return _Articles.Skip(skip).Take(limit);
+            return _Articles.OrderBy(o => o.Title).Skip(skip).Take(limit);
         }
 
         public XArticle GetObjectByID(int pObjectID)
