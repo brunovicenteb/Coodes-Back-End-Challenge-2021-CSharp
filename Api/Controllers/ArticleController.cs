@@ -1,10 +1,9 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-using Coodesh.Back.End.Challenge2021.CSharp.Infra.Toolkit;
+using Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Web;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces;
 using Coodesh.Back.End.Challenge2021.CSharp.Service.Validators;
-using Coodesh.Back.End.Challenge2021.CSharp.Infra.Exceptions;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Controllers
 {

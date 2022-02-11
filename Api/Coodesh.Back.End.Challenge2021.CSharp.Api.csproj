@@ -29,5 +29,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Domain\Coodesh.Back.End.Challenge2021.CSharp.Domain.csproj" />
 	  <ProjectReference Include="..\Service\Coodesh.Back.End.Challenge2021.CSharp.Service.csproj" />
+	  <ProjectReference Include="..\Toolkit\Coodesh.Back.End.Challenge2021.CSharp.Toolkit.csproj" />
 	</ItemGroup>
 </Project>

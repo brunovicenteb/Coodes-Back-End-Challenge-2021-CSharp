@@ -5,7 +5,7 @@ using FluentValidation;
 using System.Collections.Generic;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces;
-using Coodesh.Back.End.Challenge2021.CSharp.Infra.Exceptions;
+using Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Exceptions;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Service.Services
 {

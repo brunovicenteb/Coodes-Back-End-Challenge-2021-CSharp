@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coodesh.Back.End.Challenge2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coodesh.Back.End.Challenge2021.CSharp.Test", "Test\Coodesh.Back.End.Challenge2021.CSharp.Test.csproj", "{565170FB-A304-420C-A740-2CDED371B4EA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coodesh.Back.End.Challenge2021.CSharp.Toolkit", "Toolkit\Coodesh.Back.End.Challenge2021.CSharp.Toolkit.csproj", "{B2B3C4B9-C1DE-4B70-8D98-789516055462}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{565170FB-A304-420C-A740-2CDED371B4EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{565170FB-A304-420C-A740-2CDED371B4EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{565170FB-A304-420C-A740-2CDED371B4EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2B3C4B9-C1DE-4B70-8D98-789516055462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2B3C4B9-C1DE-4B70-8D98-789516055462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2B3C4B9-C1DE-4B70-8D98-789516055462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2B3C4B9-C1DE-4B70-8D98-789516055462}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

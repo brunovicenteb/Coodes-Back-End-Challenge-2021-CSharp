@@ -1,8 +1,8 @@
 ﻿using System;
-using Coodesh.Back.End.Challenge2021.CSharp.Infra.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Exceptions;
 
-namespace Coodesh.Back.End.Challenge2021.CSharp.Infra.Toolkit
+namespace Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Web
 {
     public abstract class XControllerBase : ControllerBase
     {
