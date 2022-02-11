@@ -34,7 +34,7 @@ jobs:
 #      run: dotnet restore ${{ env.CAMINHO_PROJETO_TESTES }}      
 
     - name: Testes com MsTest + Coverlet
-      run: dotnet test ${{ env.CAMINHO_PROJETO }}
+      run: dotnet test ${{ env.CAMINHO_PROJETO }} --logger:"html;LogFileName=resultado-testes.html"
 #      run: dotnet test --verbosity minimal --logger:"html;LogFileName=resultado-testes.html" --collect:"XPlat Code Coverage"    
 #      run: dotnet test ${{ env.CAMINHO_PROJETO_TESTES }} --verbosity minimal --logger:"html;LogFileName=resultado-testes.html" --collect:"XPlat Code Coverage"
 
