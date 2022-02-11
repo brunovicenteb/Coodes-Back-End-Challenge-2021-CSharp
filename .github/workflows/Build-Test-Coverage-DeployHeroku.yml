@@ -24,6 +24,14 @@ jobs:
       uses: actions/setup-dotnet@v1.7.2
       with:
         dotnet-version: 5.0.x
+        
+    - name: Restaurar dependências
+      run: dotnet restore
+#      run: dotnet restore ${{ env.CAMINHO_PROJETO_TESTES }}
+      
+    - name: Build
+      run: dotnet build --no-restore
+#      run: dotnet restore ${{ env.CAMINHO_PROJETO_TESTES }}      
 
     - name: Testes com .NET 5 + Coverlet
       run: dotnet test ${{ env.CAMINHO_PROJETO_TESTES }} --verbosity minimal --logger:"html;LogFileName=resultado-testes.html" --collect:"XPlat Code Coverage"
