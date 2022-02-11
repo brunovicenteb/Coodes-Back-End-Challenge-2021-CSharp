@@ -7,8 +7,8 @@ using Coodesh.Back.End.Challenge2021.CSharp.Service.Validators;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("articles")]
     public class ArticleController : XControllerBase
     {
         private XIArticleService _Service;
