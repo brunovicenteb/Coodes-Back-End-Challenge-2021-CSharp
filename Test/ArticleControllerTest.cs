@@ -9,6 +9,7 @@ using Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
 using AutoMapper;
 using System;
+using Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Interfaces;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Test
 {
@@ -17,10 +18,17 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
         [Test]
         public void TestEndpointCount()
         {
-            ArticleController c = CreateController(true);
+            XMockCache cache = new XMockCache();
+            ArticleController c = CreateController(true, cache);
             IActionResult result = c.Count();
             long longResult = AssertOk<long>(result, 15);
             Assert.AreEqual(longResult, 15);
+            Assert.IsFalse(cache.IsLastHit);
+
+            result = c.Count(); // Call again to test cache.
+            longResult = AssertOk<long>(result, 15);
+            Assert.AreEqual(longResult, 15);
+            Assert.IsTrue(cache.IsLastHit);
         }
 
         [Test]
@@ -192,14 +200,14 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
             return (long)okResult.Value;
         }
 
-        private ArticleController CreateController(bool pLoadData = false)
+        private ArticleController CreateController(bool pLoadData = false, XICache pCache = null)
         {
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<XArticle, XArticle>();
             });
             Mapper m = new Mapper(configuration);
-            XIArticleService app = new XArticleService(new XMockArticle(pLoadData), m);
+            XIArticleService app = new XArticleService(new XMockArticle(pLoadData), pCache ?? new XMockCache(), m);
             ArticleController c = new ArticleController(app);
             return new ArticleController(app);
         }

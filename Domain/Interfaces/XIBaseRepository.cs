@@ -10,6 +10,6 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces
         TEntity Update(TEntity pValue);
         bool Delete(int pObjectID);
         TEntity GetObjectByID(int pObjectID);
-        IEnumerable<TEntity> Get(int? pLimit, int? pStart);
+        IEnumerable<TEntity> Get(int pLimit, int pStart);
     }
 }

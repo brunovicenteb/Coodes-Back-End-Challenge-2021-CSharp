@@ -51,11 +51,9 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test.Mock
             return true;
         }
 
-        public IEnumerable<XArticle> Get(int? pLimit, int? pStart)
+        public IEnumerable<XArticle> Get(int pLimit, int pStart)
         {
-            int skip = pStart ?? 0;
-            int limit = Math.Min(50, pLimit ?? 10);
-            return _Articles.OrderBy(o => o.Title).Skip(skip).Take(limit);
+            return _Articles.OrderBy(o => o.Title).Skip(pStart).Take(pLimit);
         }
 
         public XArticle GetObjectByID(int pObjectID)

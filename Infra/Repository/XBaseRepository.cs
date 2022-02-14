@@ -61,13 +61,11 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Infra.Repository
             return Objects.Find(filter).FirstOrDefault();
         }
 
-        public IEnumerable<TEntity> Get(int? pLimit, int? pStart)
+        public IEnumerable<TEntity> Get(int pLimit, int pStart)
         {
-            int skip = pStart ?? 0;
-            int limit = Math.Min(50, pLimit ?? 10);
             return Objects.Find(FilterDefinition<TEntity>.Empty)
-                .Skip(skip)
-                .Limit(limit).ToList();
+                .Skip(pStart)
+                .Limit(pLimit).ToList();
         }
     }
 }
