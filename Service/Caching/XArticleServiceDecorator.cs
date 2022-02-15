@@ -6,6 +6,7 @@ using FluentValidation;
 using System.Collections.Generic;
 using Coodesh.Back.End.Challenge2021.CSharp.Service.Validators;
 using System;
+using System.Diagnostics;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Service.Caching
 {
@@ -28,12 +29,13 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Service.Caching
         public long Count()
         {
             long output;
+            Stopwatch sw = Stopwatch.StartNew();
             if (_Cache.TryGet(_CountCacheKey, out output))
             {
-                _Logger.LogInformation("Count hit from Cache.");
+                _Logger.LogInformation($"Count hit from Cache in {sw.ElapsedMilliseconds} ms.");
                 return output;
             }
-            _Logger.LogInformation("Count from Database.");
+            _Logger.LogInformation($"Count from Database in {sw.ElapsedMilliseconds} ms.");
             output = _Inner.Count();
             _Cache.Set(_CountCacheKey, output);
             return output;
@@ -54,12 +56,13 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Service.Caching
             int limit = Math.Min(50, pLimit ?? 10);
             IEnumerable<XArticle> output;
             string key = $"Get-start:{start}-limit:{limit}";
+            Stopwatch sw = Stopwatch.StartNew();
             if (_Cache.TryGet(key, out output))
             {
-                _Logger.LogInformation($"{key} from Cache.");
+                _Logger.LogInformation($"{key} from Cache in {sw.ElapsedMilliseconds} ms.");
                 return output;
             }
-            _Logger.LogInformation($"{key} from Database.");
+            _Logger.LogInformation($"{key} from Database in {sw.ElapsedMilliseconds} ms.");
             output = _Inner.Get(limit, start);
             _Cache.Set(key, output);
             return output;
@@ -69,12 +72,13 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Service.Caching
         {
             XArticle output;
             string key = string.Format(_ArticleKey, pObjectID);
+            Stopwatch sw = Stopwatch.StartNew();
             if (_Cache.TryGet(key, out output))
             {
-                _Logger.LogInformation($"{key} from Cache.");
+                _Logger.LogInformation($"{key} from Cache in {sw.ElapsedMilliseconds} ms.");
                 return output;
             }
-            _Logger.LogInformation($"{key} from Database.");
+            _Logger.LogInformation($"{key} from Database in {sw.ElapsedMilliseconds} ms.");
             output = _Inner.GetObjectByID(pObjectID);
             _Cache.Set(key, output);
             _Cache.RemoveByPattern("get-start:*");
