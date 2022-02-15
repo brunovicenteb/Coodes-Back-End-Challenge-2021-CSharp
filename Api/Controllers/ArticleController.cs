@@ -31,7 +31,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Controllers
         [HttpGet]
         public IActionResult Articles(int? _limit = null, int? _start = null)
         {
-            return Execute(() => _Service.Get<XArticle>(_limit, _start));
+            return Execute(() => _Service.Get(_limit, _start));
         }
 
         /// <response code="200">Response</response>
@@ -41,7 +41,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Controllers
         public IActionResult Articles(int id)
         {
             //Func<IActionResult> notFound = () => NotFound($"Article {id} not found.");
-            return Execute(() => _Service.GetObjectByID<XArticle>(id));
+            return Execute(() => _Service.GetObjectByID(id));
         }
 
         /// <response code="200">Response</response>
@@ -61,7 +61,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Controllers
         [HttpPost]
         public IActionResult Articles([FromBody] XArticle pArticle)
         {
-            return Execute(() => _Service.Add<XArticle, XArticle, XArticleValidator>(pArticle));
+            return Execute(() => _Service.Add<XArticleValidator>(pArticle));
         }
 
         /// <summary>Update a Article</summary>
@@ -72,7 +72,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Controllers
         [HttpPut("{id}")]
         public IActionResult ArticlesPut(int id, [FromBody] XArticle pArticle)
         {
-            return Execute(() => _Service.Update<XArticle, XArticle, XArticleValidator>(id, pArticle));
+            return Execute(() => _Service.Update<XArticleValidator>(id, pArticle));
         }
 
         /// <summary>Delete a Article</summary>

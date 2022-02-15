@@ -2,20 +2,22 @@
 using ServiceStack.Redis;
 using Microsoft.Extensions.Configuration;
 using Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Cache;
+using Microsoft.Extensions.Logging;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Infra.Cache
 {
     public sealed class XReddisCache : XBaseCache
     {
-        public XReddisCache(IConfiguration pConfiguration)
+        public XReddisCache(IConfiguration pConfiguration, ILogger<XReddisCache> pLogger)
         {
             _Host = pConfiguration.GetValue<string>("Cache:Host");
             _Password = pConfiguration.GetValue<string>("Cache:Password");
             _Port = pConfiguration.GetValue("Cache:Port", "12220");
-            string exp = pConfiguration.GetValue("Cache:ExpirationMilliseconds", "10000");
+            string exp = pConfiguration.GetValue("Cache:ExpirationMilliseconds", "60000");
+            _Logger = pLogger;
             int expiration;
             if (!int.TryParse(exp, out expiration))
-                expiration = 10000;
+                expiration = 60000;
             _Expiration = TimeSpan.FromMilliseconds(expiration);
         }
 
@@ -23,6 +25,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Infra.Cache
         private readonly string _Port;
         private readonly string _Password;
         private readonly TimeSpan _Expiration;
+        private readonly ILogger<XReddisCache> _Logger;
         private RedisClient _Client;
 
         public override void Dispose()
@@ -37,9 +40,9 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Infra.Cache
                 var c = GetClient();
                 c.Remove(pKey);
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("ERRO AO REMOVER OBJETO NO REDIS");
+                _Logger.LogError(ex, $"Não foi possível remover a key \"{pKey}\" do Redis.");
             }
         }
 
@@ -50,9 +53,22 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Infra.Cache
                 var c = GetClient();
                 c.Set(pKey, pObject, _Expiration);
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("ERRO AO ESCREVER OBJETO NO REDIS");
+                _Logger.LogError(ex, $"Não foi possível escrever o key \"{pKey}\" no Redis.");
+            }
+        }
+
+        protected override void TryRemoveByPattern(string pPattern)
+        {
+            try
+            {
+                var c = GetClient();
+                c.RemoveByRegex(pPattern);
+            }
+            catch (Exception ex)
+            {
+                _Logger.LogError(ex, $"Não foi possível remover o padrão \"{pPattern}\" do Redis.");
             }
         }
 
@@ -63,16 +79,12 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Infra.Cache
             {
                 var c = GetClient();
                 if (!_Client.ContainsKey(pKey))
-                {
-                    Console.WriteLine("Sem cache");
                     return false;
-                }
                 pOutput = _Client.Get<T>(pKey);
-                Console.WriteLine("Do cache");
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("ERRO AO TENGAR PEGAR OBJETO NO REDIS");
+                _Logger.LogError(ex, $"Não foi tengar pegar o key \"{pKey}\" do Redis.");
             }
             return pOutput != null;
         }

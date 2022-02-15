@@ -12,7 +12,17 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Cache
 
         protected abstract bool TryGetFromCache<T>(string pKey, out T pOutput);
 
+        protected abstract void TryRemoveByPattern(string pPattern);
+
         protected abstract void Remove(string pKey);
+
+        public void RemoveByPattern(string pPattern)
+        {
+            if (string.IsNullOrEmpty(pPattern))
+                return;
+            _IsLastHit = false;
+            TryRemoveByPattern(pPattern);
+        }
 
         public bool TryGet<T>(string pKey, out T pOutput)
         {

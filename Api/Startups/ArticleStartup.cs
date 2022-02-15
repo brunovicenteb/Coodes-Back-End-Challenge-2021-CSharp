@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using AutoMapper;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Coodesh.Back.End.Challenge2021.CSharp.Infra.Cache;
-using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
+using Coodesh.Back.End.Challenge2021.CSharp.Service.Caching;
 using Coodesh.Back.End.Challenge2021.CSharp.Service.Services;
 using Coodesh.Back.End.Challenge2021.CSharp.Infra.Repository;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces;
@@ -21,7 +20,6 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Startups
         public static void ConfigureServiceArticle(this IServiceCollection pServices)
         {
             pServices.AddSingleton<XICache, XReddisCache>();
-            pServices.AddScoped<XIArticleService, XArticleService>();
             pServices.AddScoped<XIArticleRepository, XArticleRepository>();
             pServices.AddSwaggerGen(opt =>
             {
@@ -30,10 +28,18 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Startups
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 opt.IncludeXmlComments(xmlPath);
             });
-            pServices.AddSingleton(new MapperConfiguration(config =>
-            {
-                config.CreateMap<XArticle, XArticle>();
-            }).CreateMapper());
+            RegisterServices(pServices);
+            EnableDecorator(pServices);
+        }
+
+        private static void RegisterServices(IServiceCollection pServices)
+        {
+            pServices.AddScoped<XIArticleService, XArticleService>();
+        }
+
+        private static void EnableDecorator(IServiceCollection pServices)
+        {
+            pServices.Decorate<XIArticleService, XArticleServiceDecorator>();
         }
 
         public static void ConfigureArticle(this IApplicationBuilder app, IWebHostEnvironment env)

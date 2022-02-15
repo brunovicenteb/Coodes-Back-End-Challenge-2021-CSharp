@@ -28,5 +28,9 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test.Mock
         {
             return _Cache.TryGetValue<T>(pKey, out pOutput);
         }
+
+        protected override void TryRemoveByPattern(string pPattern)
+        {
+        }
     }
 }

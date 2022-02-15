@@ -6,22 +6,18 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces
 {
     public interface XIBaseService<TEntity> where TEntity : XBaseEntity
     {
-        TOutputModel Add<TInputModel, TOutputModel, TValidator>(TInputModel pInputModel)
-            where TValidator : AbstractValidator<TEntity>
-            where TInputModel : XBaseEntity
-            where TOutputModel : XBaseEntity;
-
         long Count();
 
         bool Delete(int pObjectID);
 
-        IEnumerable<TOutputModel> Get<TOutputModel>(int? pLimit, int? pStart) where TOutputModel : class;
+        IEnumerable<TEntity> Get(int? pLimit, int? pStart);
 
-        TOutputModel GetObjectByID<TOutputModel>(int pObjectID) where TOutputModel : class;
+        TEntity GetObjectByID(int pObjectID);
 
-        TOutputModel Update<TInputModel, TOutputModel, TValidator>(int pObjectID, TInputModel pInputModel)
-            where TValidator : AbstractValidator<TEntity>
-            where TInputModel : XBaseEntity
-            where TOutputModel : XBaseEntity;
+        TEntity Add<TValidator>(TEntity pInput)
+            where TValidator : AbstractValidator<TEntity>;
+
+        TEntity Update<TValidator>(int pObjectID, TEntity pInput)
+            where TValidator : AbstractValidator<TEntity>;
     }
 }

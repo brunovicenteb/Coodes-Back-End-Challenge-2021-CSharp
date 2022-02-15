@@ -1,14 +1,17 @@
+using System;
+using AutoMapper;
 using System.Linq;
 using NUnit.Framework;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using Coodesh.Back.End.Challenge2021.CSharp.Test.Mock;
+using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
 using Coodesh.Back.End.Challenge2021.CSharp.Api.Controllers;
+using Coodesh.Back.End.Challenge2021.CSharp.Service.Caching;
 using Coodesh.Back.End.Challenge2021.CSharp.Service.Services;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces;
-using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
-using AutoMapper;
-using System;
 using Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Interfaces;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Test
@@ -88,6 +91,11 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
         [Test]
         public void TestEndpointUpdateArticleErrors()
         {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<XArticle, XArticle>();
+            });
+            Mapper m = new Mapper(configuration);
             ArticleController c = CreateController(true);
             IActionResult result = c.ArticlesPut(4067, null);
             AssertError(result, "Invalid Article.");
@@ -96,7 +104,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
             Assert.IsInstanceOf<OkObjectResult>(result);
             OkObjectResult okResult = (OkObjectResult)result;
             Assert.IsInstanceOf<XArticle>(okResult.Value);
-            XArticle a = (XArticle)okResult.Value;
+            XArticle a = m.Map<XArticle>(okResult.Value);
 
             result = c.ArticlesPut(154787985, a);
             AssertNotFoundError(result, "Article 154787985 not found.");
@@ -202,14 +210,14 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
 
         private ArticleController CreateController(bool pLoadData = false, XICache pCache = null)
         {
-            var configuration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<XArticle, XArticle>();
-            });
-            Mapper m = new Mapper(configuration);
-            XIArticleService app = new XArticleService(new XMockArticle(pLoadData), pCache ?? new XMockCache(), m);
-            ArticleController c = new ArticleController(app);
-            return new ArticleController(app);
+            var serviceProvider = new ServiceCollection()
+                .AddLogging()
+                .BuildServiceProvider();
+            var factory = serviceProvider.GetService<ILoggerFactory>();
+            var logger = factory.CreateLogger<XArticleServiceDecorator>();
+            XIArticleService app = new XArticleService(new XMockArticle(pLoadData));
+            XIArticleService appCache = new XArticleServiceDecorator(app, pCache ?? new XMockCache(), logger);
+            return new ArticleController(appCache);
         }
 
         public ArticleController AssertSearchPaginatedArticles(int? pStart, int? pLimit, int pAmount, ArticleController pController = null)
@@ -289,7 +297,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
             XArticle newArticle = AssertOk<XArticle>(result, a);
             Assert.IsFalse(newArticle.Featured);
             Assert.IsTrue(string.IsNullOrEmpty(a.ObjectID));
-            Assert.AreNotSame(a, newArticle);
+            Assert.AreSame(a, newArticle);
             Assert.AreEqual(pTitle, newArticle.Title);
             Assert.AreEqual("On 24 January, 30 days after launch on Christmas Day, the James Webb Space Telescope...", newArticle.Summary);
             Assert.AreEqual(pUrl, newArticle.Url);
