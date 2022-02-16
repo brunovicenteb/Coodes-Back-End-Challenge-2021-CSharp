@@ -7,36 +7,42 @@ using System.Threading;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
-using Coodesh.Back.End.Challenge2021.CSharp.Cron.Entities;
+using Microsoft.Extensions.Configuration;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
 {
-    public class XCronArticleContext
+    public class XSincronizeJob
     {
         private const string _UrlCount = "https://api.spaceflightnewsapi.net/v3/articles/count";
         private const string _UrlArticles = "https://api.spaceflightnewsapi.net/v3/articles?_start={0}&_limit={1}";
         private readonly string _ErrosSeparator = Environment.NewLine + new string('#', 80) + Environment.NewLine;
         private const int _Limit = 1000;
 
-        public XCronArticleContext(string pConnectionString, string pDataBaseName, string pCollectionName, int pMax = -1)
+        public XSincronizeJob(IConfiguration pConfig, ILogger<XSincronizeJob> pLogger, int pMax = -1)
         {
-            var settings = MongoClientSettings.FromConnectionString(pConnectionString);
+            var conString = pConfig.GetValue<string>("DataBaseSettings:ConnectionString");
+            var dataBaseName = pConfig.GetValue<string>("DataBaseSettings:DataBaseName");
+            var collectionName = pConfig.GetValue<string>("DataBaseSettings:CollectionName");
+            var settings = MongoClientSettings.FromConnectionString(conString);
             var client = new MongoClient(settings);
-            _DB = client.GetDatabase(pDataBaseName);
+            _Logger = pLogger;
+            _DB = client.GetDatabase(dataBaseName);
             _Max = pMax;
         }
 
         private readonly int _Max;
         private readonly IMongoDatabase _DB;
+        private ILogger<XSincronizeJob> _Logger;
         private long _Count = 0;
 
-        public void Seed()
+        public void Execute()
         {
-            var logs = _DB.GetCollection<Logs>("Logs");
-            Logs l = new Logs() { Title = "CronLog", Details = "Just began", ExecAt = DateTime.UtcNow };
-            logs.InsertOne(l);
+            //var logs = _DB.GetCollection<Logs>("Logs");
+            //Logs l = new Logs() { Title = "CronLog", Details = "Just began", ExecAt = DateTime.UtcNow };
+            //logs.InsertOne(l);
             var erros = new ConcurrentStack<Exception>();
             using (HttpClient c = new HttpClient())
             {
@@ -47,14 +53,14 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
                 if (_Max > -1)
                     count = Math.Min(count, _Max);
                 int slices = (int)Math.Ceiling(Convert.ToDecimal(count) / _Limit);
-                Console.WriteLine($"Exists {count} articles to process. Wait...");
+                _Logger.LogInformation($"Exists {count} articles to process. Wait...");
                 Parallel.For(0, slices, i => SearchSlice(i, count, c, erros));
-                l.Details = $"MongoDB Bulk Process {Interlocked.Read(ref _Count)} Articles in {st.ElapsedMilliseconds} ms.";
-                Console.WriteLine($"MongoDB Bulk Process {Interlocked.Read(ref _Count)} Articles in {st.ElapsedMilliseconds} ms.");
+                //l.Details = $"MongoDB Bulk Process {Interlocked.Read(ref _Count)} Articles in {st.ElapsedMilliseconds} ms.";
+                _Logger.LogInformation($"MongoDB Bulk Process {Interlocked.Read(ref _Count)} Articles in {st.ElapsedMilliseconds} ms.");
             }
-            if (erros.Count > 0)
-                l.Details += $"[{erros.Count} Error(s)]{Environment.NewLine}{string.Join(_ErrosSeparator, erros.Select(o => o.Message))}";
-            logs.ReplaceOne(o => o.ObjectID == l.ObjectID, l);
+            //if (erros.Count > 0)
+            //    l.Details += $"[{erros.Count} Error(s)]{Environment.NewLine}{string.Join(_ErrosSeparator, erros.Select(o => o.Message))}";
+            //logs.ReplaceOne(o => o.ObjectID == l.ObjectID, l);
         }
 
         private void SearchSlice(int pIterator, int pTotal, HttpClient pClient, ConcurrentStack<Exception> pErros)
