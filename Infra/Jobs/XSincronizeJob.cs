@@ -40,9 +40,9 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
 
         public void Execute()
         {
-            //var logs = _DB.GetCollection<Logs>("Logs");
-            //Logs l = new Logs() { Title = "CronLog", Details = "Just began", ExecAt = DateTime.UtcNow };
-            //logs.InsertOne(l);
+            var logs = _DB.GetCollection<XLogs>("Logs");
+            XLogs l = new XLogs() { Title = "CronLog", Details = "Just began", ExecAt = DateTime.UtcNow };
+            logs.InsertOne(l);
             var erros = new ConcurrentStack<Exception>();
             using (HttpClient c = new HttpClient())
             {
@@ -55,12 +55,12 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
                 int slices = (int)Math.Ceiling(Convert.ToDecimal(count) / _Limit);
                 _Logger.LogInformation($"Exists {count} articles to process. Wait...");
                 Parallel.For(0, slices, i => SearchSlice(i, count, c, erros));
-                //l.Details = $"MongoDB Bulk Process {Interlocked.Read(ref _Count)} Articles in {st.ElapsedMilliseconds} ms.";
+                l.Details = $"MongoDB Bulk Process {Interlocked.Read(ref _Count)} Articles in {st.ElapsedMilliseconds} ms.";
                 _Logger.LogInformation($"MongoDB Bulk Process {Interlocked.Read(ref _Count)} Articles in {st.ElapsedMilliseconds} ms.");
             }
-            //if (erros.Count > 0)
-            //    l.Details += $"[{erros.Count} Error(s)]{Environment.NewLine}{string.Join(_ErrosSeparator, erros.Select(o => o.Message))}";
-            //logs.ReplaceOne(o => o.ObjectID == l.ObjectID, l);
+            if (erros.Count > 0)
+                l.Details += $"[{erros.Count} Error(s)]{Environment.NewLine}{string.Join(_ErrosSeparator, erros.Select(o => o.Message))}";
+            logs.ReplaceOne(o => o.ObjectID == l.ObjectID, l);
         }
 
         private void SearchSlice(int pIterator, int pTotal, HttpClient pClient, ConcurrentStack<Exception> pErros)

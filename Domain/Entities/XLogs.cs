@@ -1,14 +1,10 @@
-﻿using MongoDB.Bson;
+﻿using System;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Entities
+namespace Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities
 {
-    public class Logs
+    public class XLogs
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
