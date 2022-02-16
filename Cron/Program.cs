@@ -1,6 +1,8 @@
 ﻿using System;
 using Coodesh.Back.End.Challenge2021.CSharp.Cron.Context;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Cron
 {
@@ -13,14 +15,15 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron
                 .AddEnvironmentVariables()
                 .AddCommandLine(pArgs)
                 .Build();
-            var connectionString = config.GetValue<string>("DataBaseSettings:ConnectionString");
-            var dataBaseName = config.GetValue<string>("DataBaseSettings:DataBaseName");
-            var collectionName = config.GetValue<string>("DataBaseSettings:CollectionName");
-            Console.WriteLine($"ConectionString: {connectionString};");
-            Console.WriteLine($"DataBaseName: {dataBaseName};");
-            Console.WriteLine($"CollectionName: {collectionName};");
-            XCronArticleContext ct = new XCronArticleContext(connectionString, dataBaseName, collectionName, -1);
-            ct.Seed();
+            var sc = new ServiceCollection();
+            sc.AddLogging(builder => builder
+                .AddConsole()
+                .AddDebug());
+            sc.AddSingleton(config);
+            sc.AddSingleton<XSincronizeJob>();
+            var sb = sc.BuildServiceProvider();
+            var sj = sb.GetService<XSincronizeJob>();
+            sj.Execute();
         }
     }
 }
