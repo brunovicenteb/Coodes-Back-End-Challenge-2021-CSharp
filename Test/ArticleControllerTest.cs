@@ -183,10 +183,8 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
             IActionResult result = c.Count();
             long longResult = AssertOk<long>(result, 15);
 
-
             result = c.ArticlesDelete(4067);
-            bool removeResult = AssertOk<bool>(result, true);
-            Assert.IsTrue(removeResult);
+            Assert.IsInstanceOf<NoContentResult>(result);
 
             result = c.Count();
             AssertOk<long>(result, longResult - 1);
@@ -195,10 +193,15 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
         [Test]
         public void TestEndpointArticlesDeleteFalse()
         {
-            ArticleController c = CreateController();
-            IActionResult result = c.ArticlesDelete(157849);
-            bool removeResult = AssertOk<bool>(result, false);
-            Assert.IsFalse(removeResult);
+            ArticleController c = CreateController(true);
+            IActionResult result = c.Count();
+            long longResult = AssertOk<long>(result, 15);
+
+            result = c.ArticlesDelete(157849);
+            Assert.IsInstanceOf<NotFoundResult>(result);
+
+            result = c.Count();
+            AssertOk<long>(result, 15);
         }
 
         private long GetCount(ArticleController pController)

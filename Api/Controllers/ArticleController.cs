@@ -101,7 +101,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult ArticlesDelete(int id)
         {
-            return TryExecuteOK(() => _Service.Delete(id));
+            return TryExecuteDelete(() => _Service.Delete(id));
         }
     }
 }

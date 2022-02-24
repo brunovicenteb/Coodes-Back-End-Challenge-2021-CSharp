@@ -15,11 +15,12 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Web
             return TryExecute(action, pExecute);
         }
 
-        protected IActionResult TryExecuteOKCreated(string pActionName, Func<object> pExecute)
+        protected IActionResult TryExecuteDelete(Func<object> pExecute)
         {
             Func<object, IActionResult> action = delegate (object result)
             {
-                return CreatedAtAction(pActionName, result);
+                bool sucess = (bool)result;
+                return sucess ? NoContent() : NotFound();
             };
             return TryExecute(action, pExecute);
         }
