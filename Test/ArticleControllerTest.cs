@@ -258,6 +258,14 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
             return (T)okResult.Value;
         }
 
+        private T AssertOkCreated<T>(IActionResult pResult, object pValue)
+        {
+            Assert.IsInstanceOf<CreatedAtActionResult>(pResult);
+            CreatedAtActionResult createdResult = (CreatedAtActionResult)pResult;
+            Assert.IsInstanceOf<T>(createdResult.Value);
+            return (T)createdResult.Value;
+        }
+
         private void AssertStarlinkMission(XArticle pArticle, string pTitle = "Starlink Mission")
         {
             Assert.AreEqual(4067, pArticle.ID);
@@ -294,7 +302,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
             XArticle a = CreateArticleObject(pID, pTitle, pUrl, pImageUrl);
 
             IActionResult result = c.Articles(a);
-            XArticle newArticle = AssertOk<XArticle>(result, a);
+            XArticle newArticle = AssertOkCreated<XArticle>(result, a);
             Assert.IsFalse(newArticle.Featured);
             Assert.IsTrue(string.IsNullOrEmpty(a.ObjectID));
             Assert.AreSame(a, newArticle);
