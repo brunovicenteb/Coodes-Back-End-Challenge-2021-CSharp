@@ -72,7 +72,9 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Service.Services
 
         private void Validate(TEntity pOject, AbstractValidator<TEntity> pValidator)
         {
-            pValidator.ValidateAndThrow(pOject);
+            var validateResult = pValidator.Validate(pOject);
+            if (!validateResult.IsValid)
+                throw new XBadRequestException(validateResult.ToString());
         }
     }
 }

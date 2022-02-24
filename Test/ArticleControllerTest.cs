@@ -57,15 +57,15 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
 
             XArticle a = CreateArticleObject(5789654, null, null, null);
             result = c.Articles(a);
-            AssertError(result, $"Validation failed: {Environment.NewLine} -- Title: Title not informed.{Environment.NewLine} -- Url: Url not informed.{Environment.NewLine} -- ImageUrl: ImageUrl not informed.");
+            AssertError(result, $"Title not informed.{Environment.NewLine}Url not informed.{Environment.NewLine}ImageUrl not informed.");
 
             a.Title = "Starlink Mission";
             result = c.Articles(a);
-            AssertError(result, $"Validation failed: {Environment.NewLine} -- Url: Url not informed.{Environment.NewLine} -- ImageUrl: ImageUrl not informed.");
+            AssertError(result, $"Url not informed.{Environment.NewLine}ImageUrl not informed.");
 
             a.Url = "This is a Url content";
             result = c.Articles(a);
-            AssertError(result, $"Validation failed: {Environment.NewLine} -- ImageUrl: ImageUrl not informed.");
+            AssertError(result, $"ImageUrl not informed.");
         }
 
         [Test]
@@ -111,15 +111,15 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
 
             a.Title = a.Url = a.ImageUrl = string.Empty;
             result = c.ArticlesPut(4067, a);
-            AssertError(result, $"Validation failed: {Environment.NewLine} -- Title: Title not informed.{Environment.NewLine} -- Url: Url not informed.{Environment.NewLine} -- ImageUrl: ImageUrl not informed.");
+            AssertError(result, $"Title not informed.{Environment.NewLine}Url not informed.{Environment.NewLine}ImageUrl not informed.");
 
             a.Title = "Starlink Mission";
             result = c.ArticlesPut(4067, a);
-            AssertError(result, $"Validation failed: {Environment.NewLine} -- Url: Url not informed.{Environment.NewLine} -- ImageUrl: ImageUrl not informed.");
+            AssertError(result, $"Url not informed.{Environment.NewLine}ImageUrl not informed.");
 
             a.Url = "This is a Url content";
             result = c.ArticlesPut(4067, a);
-            AssertError(result, $"Validation failed: {Environment.NewLine} -- ImageUrl: ImageUrl not informed.");
+            AssertError(result, $"ImageUrl not informed.");
         }
 
         [Test]
