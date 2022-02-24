@@ -27,6 +27,9 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Startups
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 opt.IncludeXmlComments(xmlPath);
+                xmlFile = $"Coodesh.Back.End.Challenge2021.CSharp.Domain.xml";
+                xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                opt.IncludeXmlComments(xmlPath);
             });
             RegisterServices(pServices);
             EnableDecorator(pServices);
