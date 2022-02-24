@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Web;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces;
@@ -18,71 +20,83 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Controllers
             _Service = pService;
         }
 
-        /// <response code="200">Response</response>
+
+        /// <summary>Returns the total number of registered articles.</summary>
         [HttpGet("count")]
+        [ProducesResponseType(typeof(long), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Count()
         {
-            return Execute(() => _Service.Count());
+            return TryExecuteOK(() => _Service.Count());
         }
 
-        /// <response code="200">Response</response>
+
+        /// <summary>Returns the registered articles with the possibility of pagination.</summary>
         /// <param name="_limit">Maximum number of results possible (Limited to 50 results).</param>
         /// <param name="_start">Skip a specific number of entries. This feature is especially useful for pagination.</param>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<XArticle>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Articles(int? _limit = null, int? _start = null)
         {
-            return Execute(() => _Service.Get(_limit, _start));
+            return TryExecuteOK(() => _Service.Get(_limit, _start));
         }
 
-        /// <response code="200">Response</response>
-        /// <response code="404">Not Found</response>
-        /// <param name="id">Identifier of Article.</param>
+        /// <summary>Returns an article by identifier.</summary>
+        /// <param name="id">Identifier of article.</param>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(XArticle), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Articles(int id)
         {
-            //Func<IActionResult> notFound = () => NotFound($"Article {id} not found.");
-            return Execute(() => _Service.GetObjectByID(id));
+            return TryExecuteOK(() => _Service.GetObjectByID(id));
         }
 
-        /// <response code="200">Response</response>
-        /// <response code="400">Bad Request</response>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     {
-        ///        "featured": true,
-        ///        "title": "some title",
-        ///        "url": "some url",
-        ///        "imageUrl": "some imageUrl",
-        ///        "newsSite": "some newsSite"
-        ///     }
-        ///
-        /// </remarks>
+
+        /// <summary>Create a new article.</summary>
         [HttpPost]
+        [ProducesResponseType(typeof(XArticle), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Articles([FromBody] XArticle pArticle)
         {
-            return Execute(() => _Service.Add<XArticleValidator>(pArticle));
+            Func<object> execute = delegate
+            {
+                return _Service.Add<XArticleValidator>(pArticle);
+            };
+            Func<object, IActionResult> action = delegate (object result)
+            {
+                XArticle a = result as XArticle;
+                return CreatedAtAction(nameof(Articles).ToLower(), new { id = a.ID }, result);
+            };
+            return TryExecute(action, execute);
         }
 
-        /// <summary>Update a Article</summary>
-        /// <response code="200">Response</response>
-        /// <response code="404">Bad Request</response>
-        /// <param name="id">Identifier of Article.</param>
-        /// <param name="pArticle">Article to update (From Body).</param>
+        /// <summary>Update a article.</summary>
+        /// <param name="id">Identifier of article.</param>
+        /// <param name="pArticle">Article to update.</param>
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(XArticle), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult ArticlesPut(int id, [FromBody] XArticle pArticle)
         {
-            return Execute(() => _Service.Update<XArticleValidator>(id, pArticle));
+            return TryExecuteOK(() => _Service.Update<XArticleValidator>(id, pArticle));
         }
 
-        /// <summary>Delete a Article</summary>
-        /// <response code="200">Response</response>
-        /// <response code="404">Bad Request</response>
-        /// <param name="id">Identifier of Article.</param>
+        /// <summary>Delete a article.</summary>
+        /// <param name="id">Identifier of article.</param>
+        /// <remarks>When you delete an article, it will be permanently removed from the base.</remarks>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult ArticlesDelete(int id)
         {
-            return Execute(() => _Service.Delete(id));
+            return TryExecuteDelete(() => _Service.Delete(id));
         }
     }
 }

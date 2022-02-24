@@ -6,6 +6,8 @@ Essa é uma REST API criada por **Bruno Belchior**, cujo propósito é demonstra
 
 Uma versão desse mesmo em execução está [disponível](https://coodesh-backend-challenge.herokuapp.com), na hospedagem gratuita fornecida pela Heroku. Para ver a documentação disponível no formato Open API 3.0 basta acessar [esse link](https://coodesh-backend-challenge.herokuapp.com/swagger/index.html).
 
+>  ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/brunovicenteb/Coodes-Back-End-Challenge-2021-CSharp/Build-Tests-Coverlet-DeployHeroku) ![GitHub last commit](https://img.shields.io/github/last-commit/brunovicenteb/Coodes-Back-End-Challenge-2021-CSharp) ![GitHub top language](https://img.shields.io/github/languages/top/brunovicenteb/Coodes-Back-End-Challenge-2021-CSharp) ![GitHub language count](https://img.shields.io/github/languages/count/brunovicenteb/Coodes-Back-End-Challenge-2021-CSharp) ![GitHub repo size](https://img.shields.io/github/repo-size/brunovicenteb/Coodes-Back-End-Challenge-2021-CSharp) ![GitHub](https://img.shields.io/github/license/brunovicenteb/Coodes-Back-End-Challenge-2021-CSharp)
+
 ### Tecnologias utilizadas no desenvolvimento do projeto
 
 <table>
