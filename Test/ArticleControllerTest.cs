@@ -13,6 +13,7 @@ using Coodesh.Back.End.Challenge2021.CSharp.Service.Caching;
 using Coodesh.Back.End.Challenge2021.CSharp.Service.Services;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces;
 using Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Interfaces;
+using Coodesh.Back.End.Challenge2021.CSharp.Domain.Queries;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Test
 {
@@ -52,7 +53,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
         public void TestEndpointCreateArticleWithErrors()
         {
             ArticleController c = CreateController();
-            IActionResult result = c.Articles(null);
+            IActionResult result = c.Articles(null as XArticle);
             AssertError(result, "Invalid Article.");
 
             XArticle a = CreateArticleObject(5789654, null, null, null);
@@ -146,7 +147,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
         public void TestEndpointSearchArticleEmpty()
         {
             ArticleController c = CreateController();
-            IActionResult result = c.Articles();
+            IActionResult result = c.Articles(new XArticleQuery());
             Assert.IsInstanceOf<OkObjectResult>(result);
             OkObjectResult okResult = (OkObjectResult)result;
             Assert.IsInstanceOf<IEnumerable<XArticle>>(okResult.Value);
@@ -220,10 +221,11 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
             return new ArticleController(appCache);
         }
 
-        public ArticleController AssertSearchPaginatedArticles(int? pStart, int? pLimit, int pAmount, ArticleController pController = null)
+        public ArticleController AssertSearchPaginatedArticles(int? pOffset, int? pLimit, int pAmount, ArticleController pController = null)
         {
             ArticleController c = pController ?? CreateController(true); // Alimenta 15 artigos.
-            IActionResult result = c.Articles(pLimit, pStart);
+            XArticleQuery q = new XArticleQuery() { Limit = pLimit, Offset = pOffset };
+            IActionResult result = c.Articles(q);
 
             Assert.IsInstanceOf<OkObjectResult>(result);
             OkObjectResult okResult = (OkObjectResult)result;

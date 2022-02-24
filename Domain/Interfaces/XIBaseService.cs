@@ -1,16 +1,20 @@
 ﻿using FluentValidation;
 using System.Collections.Generic;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
+using Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Interfaces;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces
 {
-    public interface XIBaseService<TEntity> where TEntity : XBaseEntity
+    public interface XIBaseService<TEntity, TQuery>
+        where TEntity : XBaseEntity
+        where TQuery : XICustomQueryable
+
     {
         long Count();
 
         bool Delete(int pObjectID);
 
-        IEnumerable<TEntity> Get(int? pLimit, int? pStart);
+        IEnumerable<TEntity> Get(TQuery pQuery);
 
         TEntity GetObjectByID(int pObjectID);
 

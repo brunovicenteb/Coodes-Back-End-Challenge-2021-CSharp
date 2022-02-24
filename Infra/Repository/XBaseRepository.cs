@@ -14,12 +14,12 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Infra.Repository
 
         public XBaseRepository(IConfiguration pConfiguration)
         {
-            var client = new MongoClient(pConfiguration.GetValue<string>
-                ("DataBaseSettings:ConnectionString"));
-            var database = client.GetDatabase(pConfiguration.GetValue<string>
-                ("DataBaseSettings:DataBaseName"));
-            Objects = database.GetCollection<TEntity>(pConfiguration.GetValue<string>
-                    ("DataBaseSettings:CollectionName"));
+            string strCon = pConfiguration.GetValue<string>("DataBaseSettings:ConnectionString");
+            string dataBaseName = pConfiguration.GetValue<string>("DataBaseSettings:DataBaseName");
+            string collectionName = pConfiguration.GetValue<string>("DataBaseSettings:CollectionName");
+            var client = new MongoClient(strCon);
+            var database = client.GetDatabase(dataBaseName);
+            Objects = database.GetCollection<TEntity>(collectionName);
         }
 
         protected abstract void UpdateData(TEntity pUpdated, TEntity pOriginal);
@@ -61,10 +61,10 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Infra.Repository
             return Objects.Find(filter).FirstOrDefault();
         }
 
-        public IEnumerable<TEntity> Get(int pLimit, int pStart)
+        public IEnumerable<TEntity> Get(int pLimit, int pOffset)
         {
             return Objects.Find(FilterDefinition<TEntity>.Empty)
-                .Skip(pStart)
+                .Skip(pOffset)
                 .Limit(pLimit).ToList();
         }
     }

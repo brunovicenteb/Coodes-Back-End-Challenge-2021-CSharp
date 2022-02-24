@@ -1,12 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using FluentValidation;
+using System.Diagnostics;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using Coodesh.Back.End.Challenge2021.CSharp.Domain.Queries;
+using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces;
 using Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Interfaces;
-using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
-using FluentValidation;
-using System.Collections.Generic;
 using Coodesh.Back.End.Challenge2021.CSharp.Service.Validators;
-using System;
-using System.Diagnostics;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Service.Caching
 {
@@ -50,20 +51,20 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Service.Caching
             return true;
         }
 
-        public IEnumerable<XArticle> Get(int? pLimit, int? pStart)
+        public IEnumerable<XArticle> Get(XArticleQuery pQuery)
         {
-            int start = pStart ?? 0;
-            int limit = Math.Min(50, pLimit ?? 10);
+            int start = pQuery.Offset ?? 0;
+            int limit = Math.Min(50, pQuery.Limit ?? 10);
             IEnumerable<XArticle> output;
-            string key = $"Get-start:{start}-limit:{limit}";
             Stopwatch sw = Stopwatch.StartNew();
+            string key = $"Get-start:{start}-limit:{limit}";
             if (_Cache.TryGet(key, out output))
             {
                 _Logger.LogInformation($"{key} from Cache in {sw.ElapsedMilliseconds} ms.");
                 return output;
             }
             _Logger.LogInformation($"{key} from Database in {sw.ElapsedMilliseconds} ms.");
-            output = _Inner.Get(limit, start);
+            output = _Inner.Get(pQuery);
             _Cache.Set(key, output);
             return output;
         }

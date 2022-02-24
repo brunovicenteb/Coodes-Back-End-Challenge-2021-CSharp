@@ -22,11 +22,11 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api
             pServices.ConfigureServiceArticle();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory pLog)
+        public void Configure(IApplicationBuilder pApp, IWebHostEnvironment pEnv, ILoggerFactory pLog)
         {
-            app.UseDeveloperExceptionPage();
-            app.UseRouting();
-            app.ConfigureArticle(env);
+            pApp.UseDeveloperExceptionPage();
+            pApp.UseRouting();
+            pApp.ConfigureArticle(pEnv);
             var logger = pLog.CreateLogger<Startup>();
             logger.LogInformation("#############################################################");
             logger.LogInformation("###                Executando Configure                   ###");

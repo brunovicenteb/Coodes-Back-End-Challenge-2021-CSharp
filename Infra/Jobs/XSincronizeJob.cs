@@ -24,18 +24,19 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
         public XSincronizeJob(IConfiguration pConfig, ILogger<XSincronizeJob> pLogger, int pMax = -1)
         {
             var conString = pConfig.GetValue<string>("DataBaseSettings:ConnectionString");
-            var dataBaseName = pConfig.GetValue<string>("DataBaseSettings:DataBaseName");
-            var collectionName = pConfig.GetValue<string>("DataBaseSettings:CollectionName");
+            var dataBaseName = pConfig.GetValue("DataBaseSettings:DataBaseName", "BackEndChallengeDB");
+            _CollectionName = pConfig.GetValue("DataBaseSettings:CollectionName", "Articles");
             var settings = MongoClientSettings.FromConnectionString(conString);
             var client = new MongoClient(settings);
-            _Logger = pLogger;
             _DB = client.GetDatabase(dataBaseName);
+            _Logger = pLogger;
             _Max = pMax;
         }
 
         private readonly int _Max;
         private readonly IMongoDatabase _DB;
         private ILogger<XSincronizeJob> _Logger;
+        private string _CollectionName;
         private long _Count = 0;
 
         public void Execute()
@@ -76,7 +77,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Cron.Context
                     if (articles.Count == 0)
                         return;
                     List<WriteModel<XArticle>> bag = new List<WriteModel<XArticle>>();
-                    var dbArticles = _DB.GetCollection<XArticle>("Articles");
+                    var dbArticles = _DB.GetCollection<XArticle>(_CollectionName);
                     articles.ForEach(a => CreateUpdateModel(a, bag));
                     var result = dbArticles.BulkWrite(bag);
                     Interlocked.Add(ref _Count, bag.Count);

@@ -1,8 +1,9 @@
-﻿using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
+﻿using Coodesh.Back.End.Challenge2021.CSharp.Domain.Queries;
+using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces
 {
-    public interface XIArticleService : XIBaseService<XArticle>
+    public interface XIArticleService : XIBaseService<XArticle, XArticleQuery>
     {
     }
 }

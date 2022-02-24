@@ -1,7 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<StartupObject></StartupObject>
+		<UserSecretsId>40562c40-3847-4be7-af20-535211aa64b1</UserSecretsId>
+		<Configurations>Debug;Release</Configurations>
 	</PropertyGroup>
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -27,8 +29,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Domain\Coodesh.Back.End.Challenge2021.CSharp.Domain.csproj" />
-	  <ProjectReference Include="..\Service\Coodesh.Back.End.Challenge2021.CSharp.Service.csproj" />
-	  <ProjectReference Include="..\Toolkit\Coodesh.Back.End.Challenge2021.CSharp.Toolkit.csproj" />
+		<ProjectReference Include="..\Domain\Coodesh.Back.End.Challenge2021.CSharp.Domain.csproj" />
+		<ProjectReference Include="..\Service\Coodesh.Back.End.Challenge2021.CSharp.Service.csproj" />
+		<ProjectReference Include="..\Toolkit\Coodesh.Back.End.Challenge2021.CSharp.Toolkit.csproj" />
 	</ItemGroup>
+
+	<Choose>
+		<When Condition="'$(Configuration)' == 'Release'">
+			<ItemGroup>
+				<None Include="appsettings.Development.json" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
+			</ItemGroup>
+		</When>
+
+		<When Condition="'$(Configuration)' == 'Debug'">
+			<ItemGroup>
+				<None Include="appsettings.Production.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Always" />
+			</ItemGroup>
+		</When>
+	</Choose>
 </Project>

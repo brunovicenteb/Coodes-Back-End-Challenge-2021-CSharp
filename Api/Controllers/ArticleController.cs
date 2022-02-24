@@ -4,6 +4,7 @@ using Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Web;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces;
 using Coodesh.Back.End.Challenge2021.CSharp.Service.Validators;
+using Coodesh.Back.End.Challenge2021.CSharp.Domain.Queries;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Controllers
 {
@@ -26,12 +27,12 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Controllers
         }
 
         /// <response code="200">Response</response>
-        /// <param name="_limit">Maximum number of results possible (Limited to 50 results).</param>
-        /// <param name="_start">Skip a specific number of entries. This feature is especially useful for pagination.</param>
+        ///// <param name="_limit">Maximum number of results possible (Limited to 50 results).</param>
+        ///// <param name="_start">Skip a specific number of entries. This feature is especially useful for pagination.</param>
         [HttpGet]
-        public IActionResult Articles(int? _limit = null, int? _start = null)
+        public IActionResult Articles(XArticleQuery pQuery)
         {
-            return Execute(() => _Service.Get(_limit, _start));
+            return Execute(() => _Service.Get(pQuery));
         }
 
         /// <response code="200">Response</response>

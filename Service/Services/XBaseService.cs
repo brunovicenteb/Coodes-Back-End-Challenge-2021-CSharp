@@ -4,10 +4,13 @@ using System.Collections.Generic;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Entities;
 using Coodesh.Back.End.Challenge2021.CSharp.Domain.Interfaces;
 using Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Exceptions;
+using Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Interfaces;
 
 namespace Coodesh.Back.End.Challenge2021.CSharp.Service.Services
 {
-    public abstract class XBaseService<TEntity> : XIBaseService<TEntity> where TEntity : XBaseEntity
+    public abstract class XBaseService<TEntity, TQuery> : XIBaseService<TEntity, TQuery>
+        where TEntity : XBaseEntity
+        where TQuery : XICustomQueryable
     {
         private readonly XIBaseRepository<TEntity> _BaseRepository;
 
@@ -28,11 +31,11 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Service.Services
             return _BaseRepository.Delete(pObjectID);
         }
 
-        public IEnumerable<TEntity> Get(int? pLimit, int? pStart)
+        public IEnumerable<TEntity> Get(TQuery pQuery)
         {
-            int start = pStart ?? 0;
-            int limit = Math.Min(50, pLimit ?? 10);
-            return _BaseRepository.Get(limit, start);
+            int offset = pQuery.Offset ?? 0;
+            int limit = Math.Min(50, pQuery.Limit ?? 10);
+            return _BaseRepository.Get(limit, offset);
         }
 
         public TEntity GetObjectByID(int pObjectID)

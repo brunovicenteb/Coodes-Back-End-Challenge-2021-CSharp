@@ -3,6 +3,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 #EXPOSE 80
 
+ENV ASPNETCORE_ENVIRONMENT=Production
+
 # Install Cron
 RUN apt-get update -qq && apt-get -y install cron -qq --force-yes
 
@@ -47,6 +49,8 @@ RUN dotnet publish -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
+RUN rm -f /app/appsettings.Development.json
+RUN rm -f /app/appsettings.Production.json
 
 #Schedule Task
 ADD crontab.txt /app/crontab.txt
