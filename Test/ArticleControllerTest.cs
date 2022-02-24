@@ -301,11 +301,16 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
         {
             ArticleController c = CreateController();
             long count = GetCount(c);
-
+                
             XArticle a = CreateArticleObject(pID, pTitle, pUrl, pImageUrl);
 
             IActionResult result = c.Articles(a);
             XArticle newArticle = AssertOkCreated<XArticle>(result, a);
+            CreatedAtActionResult resultCreated = (CreatedAtActionResult)result;
+            Assert.AreEqual("articles", resultCreated.ActionName);
+            Assert.AreEqual(1, resultCreated.RouteValues.Count);
+            Assert.AreEqual("id", resultCreated.RouteValues.First().Key);
+            Assert.AreEqual(a.ID, resultCreated.RouteValues.First().Value);
             Assert.IsFalse(newArticle.Featured);
             Assert.IsTrue(string.IsNullOrEmpty(a.ObjectID));
             Assert.AreSame(a, newArticle);

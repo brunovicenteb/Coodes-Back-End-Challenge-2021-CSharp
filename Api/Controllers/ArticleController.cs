@@ -75,7 +75,7 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Controllers
             Func<object, IActionResult> action = delegate (object result)
             {
                 XArticle a = result as XArticle;
-                return CreatedAtAction(nameof(Articles), new { id = a.ID }, result);
+                return CreatedAtAction(nameof(Articles).ToLower(), new { id = a.ID }, result);
             };
             return TryExecute(action, execute);
         }
