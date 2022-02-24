@@ -183,10 +183,8 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
             IActionResult result = c.Count();
             long longResult = AssertOk<long>(result, 15);
 
-
             result = c.ArticlesDelete(4067);
-            bool removeResult = AssertOk<bool>(result, true);
-            Assert.IsTrue(removeResult);
+            Assert.IsInstanceOf<NoContentResult>(result);
 
             result = c.Count();
             AssertOk<long>(result, longResult - 1);
@@ -195,10 +193,15 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
         [Test]
         public void TestEndpointArticlesDeleteFalse()
         {
-            ArticleController c = CreateController();
-            IActionResult result = c.ArticlesDelete(157849);
-            bool removeResult = AssertOk<bool>(result, false);
-            Assert.IsFalse(removeResult);
+            ArticleController c = CreateController(true);
+            IActionResult result = c.Count();
+            long longResult = AssertOk<long>(result, 15);
+
+            result = c.ArticlesDelete(157849);
+            Assert.IsInstanceOf<NotFoundResult>(result);
+
+            result = c.Count();
+            AssertOk<long>(result, 15);
         }
 
         private long GetCount(ArticleController pController)
@@ -258,6 +261,14 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
             return (T)okResult.Value;
         }
 
+        private T AssertOkCreated<T>(IActionResult pResult, object pValue)
+        {
+            Assert.IsInstanceOf<CreatedAtActionResult>(pResult);
+            CreatedAtActionResult createdResult = (CreatedAtActionResult)pResult;
+            Assert.IsInstanceOf<T>(createdResult.Value);
+            return (T)createdResult.Value;
+        }
+
         private void AssertStarlinkMission(XArticle pArticle, string pTitle = "Starlink Mission")
         {
             Assert.AreEqual(4067, pArticle.ID);
@@ -290,11 +301,16 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Test
         {
             ArticleController c = CreateController();
             long count = GetCount(c);
-
+                
             XArticle a = CreateArticleObject(pID, pTitle, pUrl, pImageUrl);
 
             IActionResult result = c.Articles(a);
-            XArticle newArticle = AssertOk<XArticle>(result, a);
+            XArticle newArticle = AssertOkCreated<XArticle>(result, a);
+            CreatedAtActionResult resultCreated = (CreatedAtActionResult)result;
+            Assert.AreEqual("articles", resultCreated.ActionName);
+            Assert.AreEqual(1, resultCreated.RouteValues.Count);
+            Assert.AreEqual("id", resultCreated.RouteValues.First().Key);
+            Assert.AreEqual(a.ID, resultCreated.RouteValues.First().Value);
             Assert.IsFalse(newArticle.Featured);
             Assert.IsTrue(string.IsNullOrEmpty(a.ObjectID));
             Assert.AreSame(a, newArticle);
