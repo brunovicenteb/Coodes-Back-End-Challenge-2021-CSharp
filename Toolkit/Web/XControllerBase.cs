@@ -44,10 +44,6 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Toolkit.Web
             {
                 return Unauthorized(ex.Message);
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
         }
     }
 }
