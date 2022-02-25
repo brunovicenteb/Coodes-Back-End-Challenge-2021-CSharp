@@ -15,37 +15,50 @@ Uma versão desse mesmo em execução está [disponível](https://coodesh-backen
     <th></th>
     <th>Tecnologia</th>
     <th>Versão</th>
+    <th>Ferramentas</th>    
   </tr>
   <tr>
     <td><img align="center" alt="Rafa-Csharp" height="30" width="40" src="https://icongr.am/devicon/dot-net-original.svg?size=40"></td>
     <td>.Net Core</td>
     <td>5.0</td>
+    <td><a href="https://serilog.net">Serilog</a>, <a href="https://nunit.org">NUnit</a>, <a href="https://fluentvalidation.net">FluentValidation</a></td>
   </tr>
   <tr>
     <td><img align="center" alt="Rafa-Csharp" height="30" width="40" src="https://icongr.am/devicon/csharp-original.svg?size=40"></td>
     <td>C#</td>
     <td>8.0</td>
+    <td></td>
   </tr>    
   <tr>
     <td><img align="center" alt="Rafa-Csharp" height="30" width="40" src="https://icongr.am/devicon/visualstudio-plain.svg?size=40"></td>
     <td>Visual Studio</td>
     <td>2022 Community</td>
+    <td></td>
   </tr>    
   <tr>
     <td><img align="center" alt="Rafa-Csharp" height="30" width="40" src="https://icongr.am/devicon/mongodb-original.svg?size=40"></td>
     <td>MongoDB</td>
     <td>5.0.6 Community</td>
+    <td><a href="https://docs.mongodb.com/compass/current">MongoDB Compass</a>, <a href="https://docs.mongodb.com/drivers/csharp">MongoDB.Driver</a></td>    
   </tr>
   <tr>
     <td><img align="center" alt="Rafa-Csharp" height="30" width="40" src="https://icongr.am/devicon/docker-original.svg?size=40"></td>
     <td>Docker</td>
     <td>lasted</td>
+    <td><a href="https://hub.docker.com/editions/community/docker-ce-desktop-windows">Docker Desktop for Windows</a></td>    
   </tr>
   <tr>
     <td><img align="center" alt="Rafa-Csharp" height="30" width="40" src="https://icongr.am/devicon/redis-original-wordmark.svg?size=40"></td>
     <td>Redis</td>
     <td>lasted</td>
-  </tr>   
+    <td></td>    
+  </tr>
+  <tr>
+    <td><img align="center" alt="Rafa-Csharp" height="30" width="40" src="https://icongr.am/devicon/git-original.svg?size=40"></td>
+    <td>Git</td>
+    <td>lasted</td>
+    <td><a href="https://github.com/nvie/gitflow">Git Flow</a></td>    
+  </tr>  
 </table>
 
 ## Armazenamento dos dados

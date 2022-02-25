@@ -71,7 +71,13 @@ namespace Coodesh.Back.End.Challenge2021.CSharp.Api.Startups
                     Name = "Bruno Belchior",
                     Email = "brunovicenteb@gmail.com",
                     Url = new Uri("https://github.com/brunovicenteb")
-                }
+                },
+                License = new OpenApiLicense
+                {
+                    Name = "MIT",
+                    Url = new Uri("https://opensource.org/licenses/MIT")
+                },
+                TermsOfService = new Uri("https://opensource.org/licenses/MIT")
             };
         }
     }
