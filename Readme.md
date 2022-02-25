@@ -29,7 +29,7 @@ Uma versão desse mesmo em execução está [disponível](https://coodesh-backen
   <tr>
     <td><img align="center" alt="Rafa-Csharp" height="30" width="40" src="https://icongr.am/devicon/visualstudio-plain.svg?size=40"></td>
     <td>Visual Studio</td>
-    <td>2019 Community</td>
+    <td>2022 Community</td>
   </tr>    
   <tr>
     <td><img align="center" alt="Rafa-Csharp" height="30" width="40" src="https://icongr.am/devicon/mongodb-original.svg?size=40"></td>
@@ -39,8 +39,13 @@ Uma versão desse mesmo em execução está [disponível](https://coodesh-backen
   <tr>
     <td><img align="center" alt="Rafa-Csharp" height="30" width="40" src="https://icongr.am/devicon/docker-original.svg?size=40"></td>
     <td>Docker</td>
-    <td>20.10.12</td>
-  </tr>    
+    <td>lasted</td>
+  </tr>
+  <tr>
+    <td><img align="center" alt="Rafa-Csharp" height="30" width="40" src="https://icongr.am/devicon/redis-original-wordmark.svg?size=40"></td>
+    <td>Redis</td>
+    <td>lasted</td>
+  </tr>   
 </table>
 
 ## Armazenamento dos dados
@@ -90,3 +95,7 @@ Nessa etapa **já é possível acessar** a [API](http://localhost:8000/) e a [do
    `
 
 Após a execução do script o banco já estará povoado com todos os dados de voos espaciai. **Não é necessário qualquer configuração do crontab**, o container já é iniciado com toda a configuração necessária.
+
+# License
+
+[The MIT License (MIT)](LICENSE)
